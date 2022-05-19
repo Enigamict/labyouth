@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 
 #define STACK_SIZE  100   
@@ -19,11 +18,11 @@ int push(int data) {
     }
 }
 
-int pop(int *data, int num) {
+int pop(int num) {
     struct stack s;
     if (num > 0) {
         num --;
-        *data = s.data[num];
+        s.data[num];
         return num;
     } else {
         return 1;
@@ -49,7 +48,7 @@ int main() {
         stackprint(num);
     } 
     for (i = 1; i <= 3; i++) {
-        num = pop(&p, num);
+        num = pop(num);
         stackprint(num);
     }
 }
