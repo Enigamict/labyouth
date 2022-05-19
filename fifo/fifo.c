@@ -8,7 +8,7 @@ struct que {
     int data[100];
 };
 
-void initQueue(struct que*queue){
+void initqueue(struct que*queue){
     queue->head = 0;
     queue->tail = -1;
 }
@@ -53,7 +53,7 @@ int main(){
     int i;
     struct que queue;
 
-    initQueue(&queue);
+    initqueue(&queue);
 
     for (i = 1; i<=5 ; i++) {
         enqueue(&queue, i);
