@@ -17,19 +17,21 @@ int enqueue(struct que *queue, int data){
 
     if((queue->tail + 2) % MAX_NUM == queue->head){
         return 1;
-    }
-
+    }else{
     queue->data[(queue->tail + 1) % MAX_NUM] = data;
-
     queue->tail = (queue->tail + 1) % MAX_NUM;
+    }
+    return 0;
 }
 
 int dequeue(struct que *queue){
 
     if((queue->tail + 1) % MAX_NUM == queue->head){
         return 1;
+    }else{
+        queue->head = (queue->head + 1) % MAX_NUM;
     }
-    queue->head = (queue->head + 1) % MAX_NUM;
+    return 0;
 }
 
 void printQueue(struct que *queue){
