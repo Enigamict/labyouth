@@ -1,15 +1,21 @@
 #include <stdio.h>
 #include <string.h>
-
-#define STACK_SIZE  100   
+#include <stdlib.h>
 
 struct stack {
+    int size;
     int num;
-    int data[100];
+    int *data;
 };
 
+int *stack_init(struct stack *s, int size) {
+    s->data = (int *)malloc(sizeof(int) * size);
+    s->size = size;
+    return s->data;
+}
+
 int push(int data, struct stack *s) {
-    if (s->num < STACK_SIZE) {
+    if (s->num < s->size) {
         s->data[s->num] = data;
         s->num ++;
         return 0;
@@ -29,22 +35,24 @@ int pop(struct stack *s) {
     }
 }
 
-void stackprint(struct stack *s)
+void stackprint(const struct stack *s)
 {
     int i;
     printf("stack [");
     for (i = 0; i < s->num; i++) {
-        printf("%d", s->data[i]);
+        printf("%2d", s->data[i]);
     }
     printf("]\n");
 }
 
 int main() {
-    int i, p, num;
+    int i, num;
+    int *p;
     struct stack s;
     memset(&s, 0, sizeof(s));
+    p = stack_init(&s, 25);
     
-    for (i = 1; i<=5 ; i++) {     
+    for (i = 1; i<=20; i++) {     
         push(i, &s);                  
         stackprint(&s);
     } 
@@ -52,5 +60,6 @@ int main() {
         pop(&s);
         stackprint(&s);
     }
+    free(p);
 }
 
