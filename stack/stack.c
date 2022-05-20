@@ -28,7 +28,7 @@ int pop(struct stack *s) {
     
     if (s->num > 0) {
         s->num --;
-        s->data[s->num];
+        s->data[s->num] = 0;
         return 0;
     } else {
         return 1;
@@ -46,7 +46,7 @@ void stackprint(const struct stack *s)
 }
 
 int main() {
-    int i, num;
+    int i;
     int *p;
     struct stack s;
     memset(&s, 0, sizeof(s));
