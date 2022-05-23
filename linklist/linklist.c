@@ -7,25 +7,71 @@ struct linklist {
     struct linklist *next;
 };
 
-int main() {
-    struct linklist *p;
-    struct linklist n1;
-    struct linklist n2;
-    struct linklist n3;
-    
-    n1.data = 1;
-    n1.next = &n2;
-    n2.data = 2;
-    n2.next = &n3;
-    n3.data = 3;
-    n3.next = NULL;
-    
-    p = &n1;
-    printf("%d\n", p -> data);
+struct linklist *newnode(struct linklist *n, int data) {
+    struct linklist *newnode;
 
-    p = p -> next;
-    printf("%d\n", p -> data);
-    
-    p = p -> next;
-    printf("%d\n", p -> data);
+    newnode = malloc(sizeof(struct linklist));
+    if (newnode == NULL) {
+        printf("error");
+    }
+    newnode->data = data;
+    newnode->next = n;
+    return newnode;
+}
+
+int addnode(struct linklist **n, int data) {
+    struct linklist *head_newnode;
+
+    head_newnode = newnode(*n, data);
+    if (head_newnode == NULL) {
+        return 1;
+    }
+    *n = head_newnode;
+    return 0;
+}
+
+int tailaddnode(struct linklist **n, int data) {
+    struct linklist *tail_newnode;
+
+    tail_newnode = newnode(NULL, data);
+    if (tail_newnode == NULL) {
+        return 1;
+    }
+    while (*n != NULL) {
+        n = &((*n)->next);
+    } 
+    *n = tail_newnode;
+    return 0;
+}
+
+int nodeprint(const struct linklist *n) {
+    printf("[");
+    for(;;){
+        printf("%d ", n->data);
+        n = n->next;
+        if (n == NULL) {
+            break;
+        }
+    }
+    printf("]\n");
+    return 0; 
+}
+
+int checknodeprint(struct linklist **n, int point) {
+    int i;
+    for (i = 0; i < point && *n != NULL; i++) {
+        n = &((*n)->next);
+    }
+    printf("check:%d", (*n)->data);
+    return 0;
+}
+
+int main() {
+    struct linklist *p = NULL;
+    addnode(&p, 10);
+    addnode(&p, 11);
+    checknodeprint(&p, 1);
+    tailaddnode(&p, 12);
+    nodeprint(p);
+    free(p); 
 }
