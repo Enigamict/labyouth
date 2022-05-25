@@ -2,10 +2,14 @@
 #include <string.h>
 #include <stdlib.h>
 
-struct linklist {
+ struct linklist {
     int data;
     struct linklist *next;
 };
+
+typedef struct foo {
+    int data;
+}foo;
 
 struct linklist *newnode(struct linklist *n, int data) {
     struct linklist *newnode;
@@ -30,6 +34,15 @@ int addnode(struct linklist **n, int data) {
     return 0;
 }
 
+struct linklist *topaddnode(struct linklist *n, int data) {
+    struct linklist *head_newnode;
+
+    head_newnode = newnode(n, data);
+    if (head_newnode == NULL) {
+        return head_newnode;
+    }
+    return head_newnode;
+}
 int tailaddnode(struct linklist **n, int data) {
     struct linklist *tail_newnode;
 
@@ -68,10 +81,16 @@ int checknodeprint(struct linklist **n, int point) {
 
 int main() {
     struct linklist *p = NULL;
-    addnode(&p, 10);
-    addnode(&p, 11);
-    checknodeprint(&p, 1);
-    tailaddnode(&p, 12);
-    nodeprint(p);
-    free(p); 
+    struct linklist *p1 = NULL;
+    foo *test = NULL;
+
+//    addnode(&p, 10);
+    p1 = topaddnode(p1, 10);
+    p1 = topaddnode(p1, 11);
+    p1 = topaddnode(p1, 11);
+    //addnode(&p, 11);
+    checknodeprint(&p1, 0);
+    //tailaddnode(&p, 12);
+    nodeprint(p1);
+    free(p1); 
 }
