@@ -4,11 +4,16 @@
 #include "stack/libstack.h"
 
 int main() {
+    stream_stack s;
     int *p;
-    struct stack s;
+    int pop_data;
 
     memset(&s, 0, sizeof(s));
     p = stack_init(&s, 25);
+
+    stack_push(1, &s);
+    stack_pop(&pop_data,&s);
+    printf("%d", pop_data);
+    stack_print(&s);
     stack_destroy(p);
-    printf("test11\n");
 }

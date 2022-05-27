@@ -3,22 +3,20 @@
 #include <stdlib.h>
 #include "libstack.h"
 
-int *stack_init(struct stack *s, int size) {
-    int *check;
-
-    check = s->data = (int *)malloc(sizeof(int) * size);
-    if (check == NULL) {
+int *stack_init(stream_stack *s, int size) {
+    s->data = (int *)malloc(sizeof(int) * size);
+    if (s->data == NULL) {
         printf("malloc fail");
     }
     s->size = size;
-    return check;
+    return s->data;
 }
 
-void *stack_destroy(int *p) {
+void stack_destroy(int *p) {
     free(p);
 }
 
-int push(int data, struct stack *s) {
+int stack_push(int data, stream_stack *s) {
     if (s->num < s->size) {
         s->data[s->num] = data;
         s->num ++;
@@ -28,18 +26,18 @@ int push(int data, struct stack *s) {
     }
 }
 
-int pop(struct stack *s) {
+int stack_pop(int *pop_data, stream_stack *s) {
     
     if (s->num > 0) {
         s->num --;
-        s->data[s->num] = 0;
+        *pop_data = s->data[s->num];
         return 0;
     } else {
         return 1;
     }
 }
 
-void stackprint(const struct stack *s)
+void stack_print(const stream_stack *s)
 {
     int i;
     printf("stack [");
