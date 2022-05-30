@@ -7,10 +7,9 @@
 int *stack_init(stream_stack *s, int size) {
     s->data = (int *)malloc(sizeof(int) * size);
     if (s->data == NULL) {
-        printf("malloc fail");
+        return NULL;
     }
     s->size = size;
-    s->bytedata[0] = 0x7e;
     return s->data;
 }
 
@@ -22,9 +21,9 @@ int stack_push(int data, stream_stack *s) {
     if (s->num < s->size) {
         s->data[s->num] = data;
         s->num ++;
-        return 0;
-    } else {
         return 1;
+    } else {
+        return 0;
     }
 }
 
@@ -32,9 +31,9 @@ int stack_pop(int *pop_data, stream_stack *s) {
     if (s->num > 0) {
         s->num --;
         *pop_data = s->data[s->num];
-        return 0;
-    } else {
         return 1;
+    } else {
+        return 0;
     }
 }
 
