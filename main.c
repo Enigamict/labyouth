@@ -1,19 +1,22 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "stack/libstack.h"
+#include "tree/libtree.h"
 
 int main() {
-    stream_stack s;
-    int *p;
-    int pop_data;
 
-    memset(&s, 0, sizeof(s));
-    p = stack_init(&s, 25);
+    tree *node;
 
-    stack_push(1, &s);
-    stack_push(2, &s);
-    stack_pop(&pop_data,&s);
-    test_stack_print(&s);
-    stack_destroy(p);
+    node = NULL;
+
+    node = add_tree(node,10, 0x00);
+    node = add_tree(node,11, 0x07);
+    node = add_tree(node,12, 0x09);
+    node = add_tree(node,9, 0x09);
+    node = add_tree(node,9, 0x09);
+    node = add_tree(node,13, 0x09);
+    node = add_tree(node,8, 0x09);
+    printf("%d", node->right->nodenum);
+
+    destroy_tree(node);
 }
