@@ -1,65 +1,96 @@
-#include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
-#include <stdint.h>
+#include <stdio.h>
+#include <assert.h>
+
 #include "libstack.h"
 
-stream_stack *stack_init(int size) {
+/**
+ * Initialize the stack
+ *
+ * @param size Specify stack size
+ * @return If malloc fails NULL
+ *         
+ */
+stream_stack *stack_init(size_t size) {
+    
+    // Do not use value less 0
+    assert(size > 0);
 
     stream_stack *s;
-    s = malloc(sizeof(stream_stack));
+    s = (stream_stack *)malloc(sizeof(stream_stack) + sizeof(int) * size);
     if (s == NULL) {
         return NULL;
     }
-    s->bytedata = NULL;
-    s->size = size;
+    s->maxSize = size;
     return s;
 }
 
-void stack_destroy(stream_stack *p) {
+/**
+ * Destory to stack
+ *
+ * @param s Takes the used stack argument
+ * @return If malloc fails NULL
+ *         
+ */
+void stack_destroy(stream_stack *s) {
 
-    if (!p)
+    if (!s)
         return;
-    free(p);
+    free(s);
 }
 
+/**
+ * Add to stack
+ *
+ * @param data Data add to the stack
+ * @param s Takes the used stack argument
+ * @return TRUE on success FAIL on capacity of the STACK 
+ *         
+ */
 int stack_push(int data, stream_stack *s) {
-    if (s->num < s->size) {
-        s->bytedata[s->num] = data;
-        s->num ++;
-        return 1;
+
+    if (s->stackIndex < s->maxSize) {
+        s->data[s->stackIndex] = data;
+        s->stackIndex ++;
+        return TRUE;
     } else {
-        return 0;
+        return FALSE;
     }
 }
 
+/**
+ * pop to stack
+ *
+ * @param data Take a pointer and pop in the data from the stack.
+ * @param s Takes the used stack argument
+ * @return TRUE on success FAIL on stack no longer exists 
+ *         
+ */
 int stack_pop(int *pop_data, stream_stack *s) { 
-    if (s->num > 0) {
-        s->num --;
-        *pop_data = s->bytedata[s->num];
-        return 1;
+
+    if (s->stackIndex > 0) {
+        s->stackIndex --;
+        *pop_data = s->data[s->stackIndex];
+        return TRUE;
     } else {
-        return 0;
+        return FALSE;
     }
 }
 
-void stack_print(const stream_stack *s)
-{
-    int i;
-    printf("stack [");
-    for (i = 0; i < s->num; i++) {
-        printf("%2d", s->bytedata[i]);
-    }
-    printf("]\n");
-}
+/**
+ * Print to stack
+ *
+ * @param s Takes the used stack argument
+ *         
+ */
+void stack_print(const stream_stack *s) {
 
-void test_stack_print(const stream_stack *s)
-{
-    int i;
-    printf("stack [");
-    for (i = 0; i < 5; i++) {
-        printf("%2x", s->bytedata[i]);
+    if (!s)
+        return;
 
+    printf("stack [");
+    for (size_t i = 0; i < s->stackIndex; i++) {
+        printf("%2d", s->data[i]);
     }
     printf("]\n");
 }

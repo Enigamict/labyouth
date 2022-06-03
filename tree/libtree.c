@@ -6,7 +6,7 @@
 
 tree *new_tree(int nodenum, int bytedata) {
 
-    tree *nodetree = malloc(sizeof(tree) + sizeof(unsigned char)*10);
+    tree *nodetree = (tree *)malloc(sizeof(tree));
     if (nodetree == NULL) {
         return NULL;
     }
@@ -31,16 +31,15 @@ tree *serch_tree(tree *node, int nodenum) {
     serch_node = node;
 
     while (serch_node) {
-        if (nodenum < node->nodenum) {
+        if (nodenum < serch_node->nodenum) {
             serch_node = node->left;
-        }else if (nodenum < node->nodenum) {
+        }else if (nodenum > serch_node->nodenum) {
             serch_node = node->right;
         } else {
             return serch_node;
         }
     }
 
-    printf("%d", serch_node->nodenum);
     return NULL; 
 }
 
