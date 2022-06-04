@@ -1,7 +1,6 @@
 #pragma once
 
 #include <stdlib.h>
-#include <stdio.h>
 
 #define STACK_MAX_DEFAULT_SIZE 100
 #define TRUE 1

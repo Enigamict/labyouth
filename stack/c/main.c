@@ -1,5 +1,7 @@
 #include "libstack.h"
 
+#include <stdio.h>
+
 int main() {
 
     stream_stack *s;
