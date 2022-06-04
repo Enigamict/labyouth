@@ -11,7 +11,7 @@ SRCTESTPATH = libstack.c
 all :
 	$(CC) $(CFLAGS) -c $(MAIN) $(LIBS)
 	ar rcs libstack.a libstack.o
-	$(CC) $(MAIN)  $(CFLAGS) -g -L. -lstack -o main 
+	$(CC) $(MAIN) $(CFLAGS) -g -L. -lstack -o main 
 
 .PHONY: test
 test: 
