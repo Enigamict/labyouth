@@ -1,50 +1,66 @@
 #include <stdio.h>
-#include <string.h>
+#include <assert.h>
 #include <stdlib.h>
-#include <stdint.h>
-#include <libqueue.h>
 
-#define MAX_NUM 100
+#include "libqueue.h"
 
-void initqueue(stream_que *queue){
-    queue->head = 0;
-    queue->tail = -1;
+
+stream_queue *queue_init(size_t size) {
+
+    assert(size > 0);
+
+    stream_queue *q;
+    q = (stream_queue *)malloc(sizeof(stream_queue) + sizeof(int) * size);
+    if (q == NULL) {
+        return NULL;
+    }
+    q->size = size;
+    q->head = 0;
+    q->tail = 0;
+    return q;
 }
 
-int enqueue(stream_que *queue, int data){
+void queue_destroy(stream_queue *q) {
 
-    if((queue->tail + 2) % MAX_NUM == queue->head){
-        return 1;
+    if (!q)
+        return;
+    free(q);
+}
+
+int queue_enqueue(stream_queue *q, int data) {
+
+    if (q->tail < (int)q->size && data > 0) { // 現在追加出来る最後尾の値とqueueのサイズを比べてtailが超えているとpush出来ない
+        q->data[(q->tail + q->head) % (int)q->size] = data; // 最後尾の値と先頭の値を足して余りを出すことによって次の最後尾に追加するべきの添字が分かる
+        q->tail++;
+        return TRUE;
     }else{
-    queue->bytedata[(queue->tail + 1) % MAX_NUM] = data;
-    queue->tail = (queue->tail + 1) % MAX_NUM;
+        return FALSE;
     }
-    return 0;
+
 }
 
-int dequeue(stream_que *queue){
+int queue_dequeue(stream_queue *q, int *data) {
 
-    if((queue->tail + 1) % MAX_NUM == queue->head){
-        return 1;
+    if (q->tail > 0){
+        *data = q->data[q->head];
+        q->data[q->head] = 0; // headを取ると0になる
+        q->head = (q->head + 1) % q->size; // 先頭の管理はpopした時に行う、リングバッファのため先頭の値も余りを使用しながら増やしていく
+        q->tail --;
+        return TRUE;
     }else{
-        queue->head = (queue->head + 1) % MAX_NUM;
+        return FALSE;
     }
-    return 0;
+
 }
 
-void printQueue(stream_que *queue){
-    int i = 0;
-    int num;
+void queue_print(const stream_queue *q) {
 
-    if (queue->tail < queue->head) {
-        num = queue->tail + MAX_NUM - queue->head + 1;
-    } else {
-        num = queue->tail - queue->head + 1;
-    }
+    if (!q)
+        return;
 
-    printf("que [");
-    for(i = 0; i < num; i++){
-        printf("%d", queue->bytedata[(queue->head + i) % MAX_NUM]);
+    printf("queue [");
+    for(size_t i = 0; i < q->size; i++){
+        printf("%3d", q->data[i]);
     }
     printf("]\n");
 }

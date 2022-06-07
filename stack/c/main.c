@@ -8,7 +8,7 @@ int main() {
     int pop_data;
     int data = 1;
 
-    s = stack_init(STACK_MAX_DEFAULT_SIZE);
+    s = stack_init(1);
 
     if (s == NULL) {
         printf("init error\n");
