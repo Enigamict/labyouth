@@ -7,9 +7,6 @@
     struct linklist *next;
 };
 
-typedef struct foo {
-    int data;
-}foo;
 
 struct linklist *newnode(struct linklist *n, int data) {
     struct linklist *newnode;
@@ -43,6 +40,7 @@ struct linklist *topaddnode(struct linklist *n, int data) {
     }
     return head_newnode;
 }
+
 int tailaddnode(struct linklist **n, int data) {
     struct linklist *tail_newnode;
 
@@ -82,7 +80,6 @@ int checknodeprint(struct linklist **n, int point) {
 int main() {
     struct linklist *p = NULL;
     struct linklist *p1 = NULL;
-    foo *test = NULL;
 
 //    addnode(&p, 10);
     p1 = topaddnode(p1, 10);

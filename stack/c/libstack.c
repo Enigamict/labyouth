@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 #include "libstack.h"
 
@@ -21,37 +22,33 @@ stream_stack *stack_init(size_t size) {
 
 void stack_destroy(stream_stack *s) {
 
-    if (!s)
-        return;
     free(s);
 }
 
 int stack_push(int data, stream_stack *s) {
 
-    if (s->stackIndex < s->maxSize) {
-        s->data[s->stackIndex] = data;
-        s->stackIndex ++;
-        return TRUE;
-    } else {
-        return FALSE;
+    if (s->stackIndex == s->maxSize) {
+        return false;
     }
+
+    s->data[s->stackIndex] = data;
+    s->stackIndex++;
+    return true;
 }
 
 int stack_pop(int *pop_data, stream_stack *s) { 
 
     if (s->stackIndex > 0) {
-        s->stackIndex --;
+        s->stackIndex--;
         *pop_data = s->data[s->stackIndex];
-        return TRUE;
-    } else {
-        return FALSE;
+        return true;
+    }else{
+        return false;
     }
+
 }
 
 void stack_print(const stream_stack *s) {
-
-    if (!s)
-        return;
 
     printf("stack [");
     for (size_t i = 0; i < s->stackIndex; i++) {

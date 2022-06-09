@@ -1,12 +1,10 @@
 #pragma once
 
-#define QUEUE_MAX_DEFAULT_SIZE 5
-#define TRUE 1
-#define FALSE 0
+#include <stddef.h>
 
 typedef struct stream_queue {
-    int tail;
-    int head;
+    size_t tail;
+    size_t head;
     size_t size;
     
     int data[];

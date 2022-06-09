@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #include "libqueue.h"
 
@@ -22,19 +23,17 @@ stream_queue *queue_init(size_t size) {
 
 void queue_destroy(stream_queue *q) {
 
-    if (!q)
-        return;
     free(q);
 }
 
 int queue_enqueue(stream_queue *q, int data) {
 
-    if (q->tail < (int)q->size && data > 0) { // 現在追加出来る最後尾の値とqueueのサイズを比べてtailが超えているとpush出来ない
-        q->data[(q->tail + q->head) % (int)q->size] = data; // 最後尾の値と先頭の値を足して余りを出すことによって次の最後尾に追加するべきの添字が分かる
+    if (q->tail < q->size) { // 現在追加出来る最後尾の値とqueueのサイズを比べてtailが超えているとpush出来ない
+        q->data[(q->tail + q->head) % q->size] = data; // 最後尾の値と先頭の値を足して余りを出すことによって次の最後尾に追加するべきの添字が分かる
         q->tail++;
-        return TRUE;
+        return true;
     }else{
-        return FALSE;
+        return false;
     }
 
 }
@@ -43,20 +42,16 @@ int queue_dequeue(stream_queue *q, int *data) {
 
     if (q->tail > 0){
         *data = q->data[q->head];
-        q->data[q->head] = 0; // headを取ると0になる
         q->head = (q->head + 1) % q->size; // 先頭の管理はpopした時に行う、リングバッファのため先頭の値も余りを使用しながら増やしていく
         q->tail --;
-        return TRUE;
+        return true;
     }else{
-        return FALSE;
+        return false;
     }
 
 }
 
 void queue_print(const stream_queue *q) {
-
-    if (!q)
-        return;
 
     printf("queue [");
     for(size_t i = 0; i < q->size; i++){

@@ -1,10 +1,6 @@
 #pragma once
 
-#include <stdlib.h>
-
-#define STACK_MAX_DEFAULT_SIZE 100
-#define TRUE 1
-#define FALSE 0
+#include <stddef.h>
 
 typedef struct stream_stack {
     size_t maxSize;
@@ -26,7 +22,6 @@ stream_stack *stack_init(size_t size);
  * Destory to stack
  *
  * @param s Takes the used stack argument
- * @return If malloc fails NULL
  *         
  */
 void stack_destroy(stream_stack *p);

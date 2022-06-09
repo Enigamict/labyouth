@@ -5,12 +5,9 @@ int main() {
     stream_queue *q;
     int data;
 
-    q = queue_init(QUEUE_MAX_DEFAULT_SIZE);
+    q = queue_init(5);
     
-    if (q == NULL) {
-        printf("init error");
-    }
-
+    if (q == NULL) { printf("init error"); }
     if (queue_enqueue(q, 1)) {
         queue_print(q);
     }else{

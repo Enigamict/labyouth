@@ -1,18 +1,18 @@
 CC = gcc
-MAIN = main.c 
-LIBS = libqueue.c
+MAIN = main.c
+LIBS = liblinklist.c
 CFLAGS = -Wall -Wextra -O2
 DEBUGFLAGS = -Wall -Wextra -g
 
 TESTINPATH = -I ./ -I ../lib/Unity/src -I ../lib/Unity/extras/fixture/src/ -I ../lib/Unity/extras/memory/src
 UNITYPATH = ../lib/Unity/src/unity.c ../lib/Unity/extras/fixture/src/unity_fixture.c ../lib/Unity/extras/memory/src/unity_memory.c
-TESTPATH = test/test_queue_init.c test/test_queue_move.c  test/test_run.c test/all_test.c
-SRCTESTPATH = libqueue.c 
+TESTPATH = ../test/testcase/test_queue_init.c ../test/testcase/test_queue_enq.c ../test/testcase/test_queue_deq.c ../test/testrun/test_run.c ../test/testrun/all_test.c
+SRCTESTPATH = liblinklist.cc
 
 all :
 	$(CC) $(CFLAGS) -c $(MAIN) $(LIBS)
-	ar rcs libqueue.a libqueue.o
-	$(CC) $(MAIN) $(CFLAGS) -g -L. -lqueue -o main 
+	ar rcs liblinklist.a liblinklist.o
+	$(CC) $(MAIN) $(CFLAGS) -g -L. -llinklist -o main 
 
 debug :
 	$(CC) $(MAIN) $(LIBS) $(DEBUGFLAGS)
@@ -20,4 +20,4 @@ debug :
 
 .PHONY: test
 test: 
-	$(CC) $(CFLAGS) $(TESTINPATH) $(UNITYPATH) $(SRCTESTPATH) $(TESTPATH) -o queuetest
+	$(CC) $(CFLAGS) $(TESTINPATH) $(UNITYPATH) $(SRCTESTPATH) $(TESTPATH) -o linklisttest
