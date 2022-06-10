@@ -22,54 +22,37 @@ link_node *new_node(link_node *n, int data) {
 
 void destroy_node(link_node *n) {
 
-    if (!n)
-        return;
-
     free(n);
 }
 
-link_node *top_add_node(link_node *n, int data) {
+link_node *add_node(link_node *n, int data) {
 
     link_node *addnode;
 
-    addnode = new_node(n, data);
 
-    if (addnode == NULL) {
-        return NULL;
-    }
-
-    return addnode;
-}
-
-link_node *tail_add_node(link_node *n, int data) {
-
-    link_node *addnode;
-
-    addnode = new_node(n, data);
+    addnode = new_node(NULL, data);
 
     if (addnode == NULL) {
         return NULL;
     }
 
     while (n != NULL) {
-        printf("next");
         n = n->next;
-        n = addnode;
-    }
-    printf("next");
+    } 
+    n = addnode;
 
     return n;
 }
 
+
 void print_node(link_node *n) {
 
-    printf("[");
-    for(;;){
-        printf("%d ", n->data);
-        n = n->next;
-        if (n == NULL) {
-            break;
-        }
+    if (n == NULL) {
+        printf("NULL\n");
     }
-    printf("]\n");
+
+    while (n != NULL) {
+        printf("%3d", n->data);
+        n = n->next;
+    }
 }

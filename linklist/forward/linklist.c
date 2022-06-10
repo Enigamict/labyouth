@@ -87,7 +87,7 @@ int main() {
     p1 = topaddnode(p1, 11);
     //addnode(&p, 11);
     checknodeprint(&p1, 0);
-    //tailaddnode(&p, 12);
+    tailaddnode(&p1, 100);
     nodeprint(p1);
     free(p1); 
 }
