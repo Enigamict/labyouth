@@ -26,7 +26,12 @@ void destroy_node(link_node *n) {
     free(n);
 }
 
-int top_out_node(link_node *n, int *data) {
+int out_node(link_node *n, int *data, int point) {
+
+    for (int i = 1; n != NULL; i++, n = n->next){
+        if (i == point)
+            break;
+    }
 
     *data = n->data;
 
@@ -50,13 +55,18 @@ int delete_node(link_node *n, int data) {
 
     link_node *nextnode = NULL;
 
+    if (data < 0){
+        return false;
+    }
+
     for (int i = 1; n != NULL; i++, n = n->next){
-        if (i == data)
+        if (i == data - 1)
             break;
     }
 
-    nextnode = n->next;
-    destroy_node(n);
+    printf("%d", n->next->data);
+    nextnode = n->next->next;
+    destroy_node(n->next);
     n->next = nextnode;
     return true;
 }
@@ -76,7 +86,6 @@ int add_node(link_node *n, int data, int point) {
             if (i == point)
                 break;
         }
-        printf("a:%d", n->data);
         addnode->next = n->next;
         n->next = addnode;
         return true;
