@@ -7,7 +7,7 @@ typedef struct stream_queue {
     size_t head;
     size_t size;
     
-    int data[];
+    int data;
 }stream_queue;
 
 /**
