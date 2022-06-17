@@ -3,11 +3,11 @@
 #include <stddef.h>
 
 typedef struct stream_queue {
-    size_t tail;
-    size_t head;
     size_t size;
+    size_t head;
+    size_t max_size;
     
-    int data;
+    int data[];
 }stream_queue;
 
 /**

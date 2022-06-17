@@ -3,6 +3,7 @@
 
 typedef struct link_node {
     struct link_node *next; 
+    struct link_node *prev; 
     int data;
 }link_node;
 
@@ -14,7 +15,7 @@ typedef struct link_node {
  * @return If malloc fails NULL
  *         
  */
-link_node *new_node(link_node *n, int data);
+link_node *new_node(link_node *prev, link_node *next, int data);
 
 /**
  * Destroy the Linkedlist node
@@ -60,11 +61,10 @@ link_node *top_add_node(link_node *n, int data);
  *
  * @param n Take node arguments
  * @param data node to point
- * @param point node to point
  * @return if malloc fails or add fails. 
  *         
  */
-int add_node(link_node *n, int data,int point);
+int add_node(link_node *n, int data);
 
 /**
  * Print the Linkedlist node

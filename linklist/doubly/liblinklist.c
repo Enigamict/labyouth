@@ -6,7 +6,7 @@
 #include "liblinklist.h"
 
 
-link_node *new_node(link_node *n, int data) {
+link_node *new_node(link_node *prev, link_node *next, int data) {
 
     link_node *newnode;
 
@@ -17,7 +17,8 @@ link_node *new_node(link_node *n, int data) {
     }
 
     newnode->data = data;
-    newnode->next = n;
+    newnode->prev = prev;
+    newnode->next = next;
     return newnode;
 }
 
@@ -42,19 +43,6 @@ int retrieve_data_node(link_node *n, int *data, int point) {
     return true;
 }
 
-link_node *top_add_node(link_node *n, int data) {
-
-    link_node *addnode;
-
-    addnode = new_node(n, data);
-
-    if (addnode == NULL) {
-        return NULL;
-    }
-
-    return addnode;
-}
-
 int delete_node(link_node *n, int point) {
 
     link_node *nextnode = NULL;
@@ -74,32 +62,22 @@ int delete_node(link_node *n, int point) {
     return true;
 }
 
-int add_node(link_node *n, int data, int point) {
+int add_node(link_node *n, int data) {
 
     link_node *addnode;
 
-    addnode = new_node(NULL, data);
+    addnode = new_node(n, NULL, data);
 
     if (addnode == NULL) {
         return false;
     }
 
-    if (point != 0) {
-        for (int i = 1; n != NULL; i++, n = n->next) {
-            if (i == point)
-                break;
-        }
-        addnode->next = n->next;
-        n->next = addnode;
-        return true;
-    }else{
-        while (n->next != NULL) {
-            n = n->next;
-        }
-        n->next = addnode;
-        return true;
+    while (n->next != NULL) {
+        n = n->next;
     }
 
+    n->next = addnode;
+    return true;
 }
 
 void print_node(link_node *n) {
