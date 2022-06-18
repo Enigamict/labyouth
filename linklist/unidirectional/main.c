@@ -49,7 +49,7 @@ int main() {
         return false;
     }
 
-    n = delete_node(n, 4);
+    n = delete_node(n, 0);
     print_node(n);
 
 }

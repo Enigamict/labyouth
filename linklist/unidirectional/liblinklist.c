@@ -48,7 +48,6 @@ link_node *delete_node(link_node *root, int index) {
     link_node *cpnode = root;
 
     if (index == 0) {
-        nextnode = root->next;
         destroy_node(root);
         return nextnode;
     }
