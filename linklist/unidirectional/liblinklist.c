@@ -45,7 +45,7 @@ int retrieve_data_node(link_node *n, int *data, int index) {
 link_node *delete_node(link_node *root, int index) {
 
     link_node *cpnode = root;
-    link_node *nextnode = root->next;
+    link_node *del_node = root;
 
     if (index == 0) {
         cpnode = root->next;
@@ -54,36 +54,19 @@ link_node *delete_node(link_node *root, int index) {
     }
 
     int i = 0;
-//    while (nextnode != NULL)
-//    {
-//        if (i == index - 1)
-//        {
-//            printf("%d", nextnode->data);
-//            printf("%d", cpnode->data);
-//            printf("%d", root->data);
-//            cpnode->next = nextnode->next;
-//            destroy_node(nextnode);
-//            return root;
-//        }
-//        else
-//        {
-//            cpnode = nextnode;
-//            nextnode = nextnode->next;
-//            i++;
-//        }
-//    }
 
-    link_node *prev = root;
-//
-    while (i < index - 1) {
-        prev = prev->next;
-        i++;
+
+    while(cpnode != NULL ) {
+        if (i == index - 1) {
+            del_node = cpnode->next;
+            cpnode->next = cpnode->next->next;
+            destroy_node(del_node);
+            return root;
+        }else{
+            cpnode = cpnode->next;
+            i++;
+        }
     }
-//
-    root = prev->next;
-    prev->next = prev->next->next;
-    destroy_node(prev);
-    printf("%d", root->next->data);
     return root;
 }
 
