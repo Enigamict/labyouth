@@ -42,14 +42,8 @@ int main() {
         printf("add error"); 
         return false;
     }
-    if (add_node(n, 5, 0)) {
-        print_node(n);
-    }else{
-        printf("add error"); 
-        return false;
-    }
 
-    n = delete_node(n, 0);
+    delete_node(n, 2);
     print_node(n);
 
 }
