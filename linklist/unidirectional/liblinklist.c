@@ -45,55 +45,35 @@ int retrieve_data_node(link_node *n, int *data, int index) {
 link_node *delete_node(link_node *root, int index) {
 
     link_node *cpnode = root;
-    link_node *del_node = root;
 
     if (index == 0) {
-        cpnode = root->next;
+        link_node *new_root = root->next;
         destroy_node(root);
-        return cpnode;
+        return new_root;
     }
 
-    int i = 0;
-
-
-    while(cpnode != NULL ) {
-        if (i == index - 1) {
-            del_node = cpnode->next;
-            cpnode->next = cpnode->next->next;
-            destroy_node(del_node);
-            return root;
-        }else{
-            cpnode = cpnode->next;
-            i++;
-        }
+    for (int i = 0; i < index - 1; i++){
+        cpnode = cpnode->next;
     }
+
+    link_node *del_node = cpnode->next;
+    cpnode->next = cpnode->next->next;
+    destroy_node(del_node);
     return root;
 }
 
-int add_node(link_node *n, int data, int point) {
+int add_node(link_node *n, int data) {
     link_node *addnode;
 
-    addnode = new_node(NULL, data);
 
-    if (addnode == NULL) {
-        return false;
-    }
+        addnode = new_node(NULL, data);
 
-    if (point != 0) {
-        for (int i = 1; n != NULL; i++, n = n->next) {
-            if (i == point)
-                break;
-        }
-        addnode->next = n->next;
-        n->next = addnode;
-        return true;
-    }else{
         while (n->next != NULL) {
             n = n->next;
         }
         n->next = addnode;
         return true;
-    }
+    
 
 }
 

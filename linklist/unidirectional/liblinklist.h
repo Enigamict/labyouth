@@ -29,7 +29,7 @@ void destroy_node(link_node *n);
  *
  * @param n Take node arguments
  * @param data retrieve data
- * @param point node to point
+ * @param index node to point
  * @return point to retrieve data 
  *         
  */
@@ -39,22 +39,21 @@ int retrieve_data_node(link_node *n, int *data, int index);
  * Delete the Linkedlist node
  *
  * @param n Take node arguments
- * @param point node to point
- * @return if the point is less than false
+ * @param index node to point
+ * @return If malloc fails NULL
  *         
  */
 link_node *delete_node(link_node *root, int index);
 
 /**
- * Data add the Linkedlist node
+ * Queue type Data add the Linkedlist node
  *
  * @param n Take node arguments
  * @param data node to point
- * @param point node to point
  * @return if malloc fails or add fails. 
  *         
  */
-int add_node(link_node *n, int data,int point);
+int add_node(link_node *n, int data);
 
 /**
  * Print the Linkedlist node

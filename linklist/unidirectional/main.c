@@ -15,7 +15,7 @@ int main() {
     }
 
 
-    if (add_node(n, 2, 0)) {
+    if (add_node(n, 2)) {
         print_node(n);
     }else{
         printf("add error"); 
@@ -30,20 +30,27 @@ int main() {
         return false;
     }
 
-    if (add_node(n, 3, 0)) {
+    if (add_node(n, 3)) {
         print_node(n);
     }else{
         printf("add error"); 
         return false;
     }
-    if (add_node(n, 4, 0)) {
+    if (add_node(n, 4)) {
         print_node(n);
     }else{
         printf("add error"); 
         return false;
     }
 
-    n = delete_node(n, 3);
+    n = delete_node(n, 2);
     print_node(n);
+
+    if (add_node(n, 5)) {
+        print_node(n);
+    }else{
+        printf("add error"); 
+        return false;
+    }
 
 }
