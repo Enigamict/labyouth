@@ -64,7 +64,7 @@ link_node *top_add_node(link_node *n, int data);
  * @return if malloc fails or add fails. 
  *         
  */
-link_node *add_node(link_node *n, int data, int index);
+link_node *add_node(link_node *n, int data);
 
 /**
  * Print the Linkedlist node

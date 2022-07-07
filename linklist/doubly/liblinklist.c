@@ -79,12 +79,11 @@ link_node *seek_tail(link_node *root) {
     return root;
 }
 
-link_node *add_node(link_node *root, int data, int index) {
+link_node *add_node(link_node *root, int data) {
 
     link_node *prev;
-    link_node *testnode;
 
-    prev = seek_node(root, index - 1);
+    prev = seek_tail(root);
 
     if (prev == NULL) {
         return NULL;
@@ -92,7 +91,7 @@ link_node *add_node(link_node *root, int data, int index) {
 
     link_node *addnode;
 
-    addnode = new_node(prev, prev->next, data);
+    addnode = new_node(prev, NULL, data);
 
     if (addnode == NULL) {
         return NULL;
