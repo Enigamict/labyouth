@@ -27,64 +27,82 @@ void destroy_node(link_node *n) {
     free(n);
 }
 
-int retrieve_data_node(link_node *n, int *data, int point) {
+int retrieve_data_node(link_node *n, int *data, const size_t index) {
 
-    if (point < 1) {
+    link_node *popnode;
+    popnode = seek_node(n, index);
+    if (popnode == NULL) {
         return false;
     }
 
-    for (int i = 1; n != NULL; i++, n = n->next){
-        if (i == point)
-            break;
-    }
-
-    *data = n->data;
+    *data = popnode->data;
 
     return true;
 }
 
-int delete_node(link_node *n, int point) {
+link_node *delete_node(link_node *root, int index) {
 
-    link_node *nextnode = NULL;
 
-    if (point <= 1) {
-        return false;
+    if (index == 0) {
+        link_node *newroot = root->next;
+        destroy_node(root);
+        newroot->prev = NULL;
+        return newroot;
     }
 
-    for (int i = 1; n != NULL; i++, n = n->next){
-        if (i == point - 1)
-            break;
-    }
+    link_node *cpnode = seek_node(root, index - 1);
 
-    nextnode = n->next->next;
-    destroy_node(n->next);
-    n->next = nextnode;
-    return true;
+    link_node *del_node = cpnode->next;
+    cpnode->next = cpnode->next->next;
+    cpnode->next->prev = cpnode;
+    destroy_node(del_node);
+
+    return root;
 }
 
-int add_node(link_node *n, int data) {
+link_node *seek_node(link_node *root, size_t n) {
+
+    for (size_t i = 0; i < n; i++) {
+        root = root->next;
+    }
+
+    return root;
+
+}
+
+link_node *seek_tail(link_node *root) {
+
+    while (root->next != NULL) {
+        root = root->next;
+    }
+
+    return root;
+}
+
+link_node *add_node(link_node *root, int data, int index) {
+
+    link_node *prev;
+    link_node *testnode;
+
+    prev = seek_node(root, index - 1);
+
+    if (prev == NULL) {
+        return NULL;
+    }
 
     link_node *addnode;
 
-    addnode = new_node(n, NULL, data);
+    addnode = new_node(prev, prev->next, data);
 
     if (addnode == NULL) {
-        return false;
+        return NULL;
     }
 
-    while (n->next != NULL) {
-        n = n->next;
-    }
-
-    n->next = addnode;
-    return true;
+    prev->next = addnode;
+    return root;
 }
 
 void print_node(link_node *n) {
-
-    if (n == NULL) {
-        printf("Node NULL\n");
-    }
 
     printf("list [");
     for (int i = 1; n != NULL; i++, n = n->next){

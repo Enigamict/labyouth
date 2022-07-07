@@ -6,9 +6,11 @@
 int main() {
     link_node *n = NULL;
 
-    n = new_node(n, NULL, 1);
-    add_node(n,2);
-    add_node(n,3);
+    n = new_node(NULL, NULL, 1);
+    n = add_node(n, 2, 1);
+    n = add_node(n, 3, 2);
+    n = add_node(n, 4, 3);
+    n = delete_node(n,1);
+    printf("%d", n->next->next->prev->data);
     print_node(n);
-    destroy_node(n); 
 }

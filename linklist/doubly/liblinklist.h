@@ -34,7 +34,7 @@ void destroy_node(link_node *n);
  * @return point to retrieve data 
  *         
  */
-int retrieve_data_node(link_node *n, int *data, int point);
+int retrieve_data_node(link_node *n, int *data, size_t point);
 
 /**
  * Delete the Linkedlist node
@@ -44,7 +44,7 @@ int retrieve_data_node(link_node *n, int *data, int point);
  * @return if the point is less than false
  *         
  */
-int delete_node(link_node *n, int point);
+link_node *delete_node(link_node *root, int index);
 
 /**
  * Top add the Linkedlist node
@@ -64,7 +64,7 @@ link_node *top_add_node(link_node *n, int data);
  * @return if malloc fails or add fails. 
  *         
  */
-int add_node(link_node *n, int data);
+link_node *add_node(link_node *n, int data, int index);
 
 /**
  * Print the Linkedlist node
@@ -73,3 +73,5 @@ int add_node(link_node *n, int data);
  *         
  */
 void print_node(link_node *n);
+link_node *seek_node(link_node *root, size_t n);
+link_node *seek_tail(link_node *root);

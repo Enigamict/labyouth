@@ -65,23 +65,17 @@ link_node *delete_node(link_node *root, int index) {
 int add_node(link_node *n, int data) {
     link_node *addnode;
 
+    addnode = new_node(NULL, data);
 
-        addnode = new_node(NULL, data);
+    while (n->next != NULL) {
+        n = n->next;
+    }
 
-        while (n->next != NULL) {
-            n = n->next;
-        }
-        n->next = addnode;
-        return true;
-    
-
+    n->next = addnode;
+    return true;
 }
 
 void print_node(link_node *n) {
-
-    if (n == NULL) {
-        printf("Node NULL\n");
-    }
 
     printf("list [");
     for (int i = 0; n != NULL; i++, n = n->next){
