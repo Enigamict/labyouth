@@ -29,13 +29,13 @@ void destroy_node(link_node *n) {
 
 int retrieve_data_node(link_node *n, int *data, const size_t index) {
 
-    link_node *popnode;
-    popnode = seek_node(n, index);
+    link_node *popNode;
+    popNode = seek_node(n, index);
     if (popnode == NULL) {
         return false;
     }
 
-    *data = popnode->data;
+    *data = popNode->data;
 
     return true;
 }
@@ -44,18 +44,18 @@ link_node *delete_node(link_node *root, int index) {
 
 
     if (index == 0) {
-        link_node *newroot = root->next;
+        link_node *newRoot = root->next;
         destroy_node(root);
         newroot->prev = NULL;
-        return newroot;
+        return newRoot;
     }
 
-    link_node *cpnode = seek_node(root, index - 1);
+    link_node *cpNode = seek_node(root, index - 1);
 
-    link_node *del_node = cpnode->next;
-    cpnode->next = cpnode->next->next;
-    cpnode->next->prev = cpnode;
-    destroy_node(del_node);
+    link_node *delNode = cpNode->next;
+    cpNode->next = cpNode->next->next;
+    cpNode->next->prev = cpNode;
+    destroy_node(delNode);
 
     return root;
 }
@@ -81,23 +81,24 @@ link_node *seek_tail(link_node *root) {
 
 link_node *add_node(link_node *root, int data) {
 
-    link_node *prev;
+    link_node *searchNode;
 
-    prev = seek_tail(root);
+    searchNode = seek_tail(root);
 
     if (prev == NULL) {
         return NULL;
     }
 
-    link_node *addnode;
+    link_node *addNode;
 
-    addnode = new_node(prev, NULL, data);
+    addNode = new_node(searchNode, NULL, data);
 
-    if (addnode == NULL) {
+    if (addNode == NULL) {
         return NULL;
     }
 
-    prev->next = addnode;
+    searchNode->next = addNode;
+
     return root;
 }
 
