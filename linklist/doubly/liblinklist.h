@@ -34,7 +34,7 @@ void destroy_node(link_node *n);
  * @return point to retrieve data 
  *         
  */
-int retrieve_data_node(link_node *n, int *data, size_t point);
+int retrieve_data_node(link_node *n, int *data);
 
 /**
  * Delete the Linkedlist node
@@ -44,7 +44,7 @@ int retrieve_data_node(link_node *n, int *data, size_t point);
  * @return if the point is less than false
  *         
  */
-link_node *delete_node(link_node *root, int index);
+link_node *delete_node(link_node *root, link_node *node);
 
 /**
  * Top add the Linkedlist node
@@ -73,5 +73,6 @@ link_node *add_node(link_node *n, int data);
  *         
  */
 void print_node(link_node *n);
-link_node *seek_node(link_node *root, size_t n);
+void print_prev_node(link_node *n);
+link_node *seek_node(link_node *root, int data);
 link_node *seek_tail(link_node *root);

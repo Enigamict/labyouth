@@ -27,11 +27,11 @@ void destroy_node(link_node *n) {
     free(n);
 }
 
-int retrieve_data_node(link_node *n, int *data, const size_t index) {
+int retrieve_data_node(link_node *n, int *data) {
 
     link_node *popNode;
-    popNode = seek_node(n, index);
-    if (popnode == NULL) {
+    popNode = seek_tail(n);
+    if (popNode == NULL) {
         return false;
     }
 
@@ -40,35 +40,39 @@ int retrieve_data_node(link_node *n, int *data, const size_t index) {
     return true;
 }
 
-link_node *delete_node(link_node *root, int index) {
+link_node *delete_node(link_node *root, link_node *node) {
 
-
-    if (index == 0) {
+    if (root == node) {
         link_node *newRoot = root->next;
-        destroy_node(root);
-        newroot->prev = NULL;
+        destroy_node(node);
+        newRoot->prev = NULL;
         return newRoot;
     }
 
-    link_node *cpNode = seek_node(root, index - 1);
+    link_node *talinode = seek_tail(root);
 
-    link_node *delNode = cpNode->next;
-    cpNode->next = cpNode->next->next;
-    cpNode->next->prev = cpNode;
-    destroy_node(delNode);
+    if (talinode == node) {
+        destroy_node(node);
+        return root;
+    } 
 
-    return root;
+    return NULL;
 }
 
-link_node *seek_node(link_node *root, size_t n) {
+link_node *seek_node(link_node *root, int data) {
 
-    for (size_t i = 0; i < n; i++) {
+    
+    while (root->next != NULL) {
+        if (data == root->data){
+            return root;
+        }
         root = root->next;
     }
 
-    return root;
+    return NULL;
 
 }
+
 
 link_node *seek_tail(link_node *root) {
 
@@ -85,7 +89,7 @@ link_node *add_node(link_node *root, int data) {
 
     searchNode = seek_tail(root);
 
-    if (prev == NULL) {
+    if (searchNode == NULL) {
         return NULL;
     }
 
@@ -107,6 +111,17 @@ void print_node(link_node *n) {
     printf("list [");
     for (int i = 1; n != NULL; i++, n = n->next){
         printf("%3d", n->data);
+    }
+    printf("]\n");
+}
+
+void print_prev_node(link_node *n) {
+ 
+    link_node *prev = seek_tail(n);
+
+    printf("list [");
+    for (int i = 1; prev != NULL; i++, prev = prev->prev){
+        printf("%3d", prev->data);
     }
     printf("]\n");
 }
