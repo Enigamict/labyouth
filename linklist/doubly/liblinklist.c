@@ -49,14 +49,9 @@ link_node *delete_node(link_node *root, link_node *node) {
         return newRoot;
     }
 
-    link_node *talinode = seek_tail(root);
-
-    if (talinode == node) {
-        destroy_node(node);
-        return root;
-    } 
-
-    return NULL;
+    node->prev->next = node->next;
+    destroy_node(node);
+    return root;
 }
 
 link_node *seek_node(link_node *root, int data) {

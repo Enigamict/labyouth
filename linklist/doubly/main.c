@@ -9,12 +9,15 @@ int main() {
 
     n = new_node(NULL, NULL, 1);
     n = add_node(n, 2);
-    n = add_node(n, 3);
+    n = add_node(n, 10);
     n = add_node(n, 4);
-    n = add_node(n, 5);
-
-    testnode = seek_node(n,3);
-    printf("%d", testnode->data);
+    n = add_node(n, 6);
     print_node(n);
-    print_prev_node(n);
+
+    testnode = seek_node(n,4);
+
+    n = delete_node(n,testnode);
+
+    print_node(n);
+    //print_prev_node(n);
 }
