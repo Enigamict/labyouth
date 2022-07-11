@@ -14,10 +14,12 @@ int main() {
     n = add_node(n, 6);
     print_node(n);
 
-    testnode = seek_node(n,4);
+    testnode = seek_node(n,2);
+    link_node *testtail = seek_tail(n);
 
-    n = delete_node(n,testnode);
+    n = delete_node(n,testtail);
 
     print_node(n);
-    //print_prev_node(n);
+    print_prev_node(n);
+    n = add_node(n, 6);
 }

@@ -49,7 +49,16 @@ link_node *delete_node(link_node *root, link_node *node) {
         return newRoot;
     }
 
+    link_node *tailCheckNode = seek_tail(root);
+
+    if (tailCheckNode == node) {
+        node->prev->next = NULL;
+        destroy_node(node);
+        return root;
+    }
+
     node->prev->next = node->next;
+    node->prev->next->prev = node->prev;
     destroy_node(node);
     return root;
 }
