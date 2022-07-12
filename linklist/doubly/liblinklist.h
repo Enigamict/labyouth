@@ -75,5 +75,5 @@ link_node *add_node(link_node *n, int data);
 void print_node(link_node *n);
 void print_prev_node(link_node *n);
 link_node *seek_node(link_node *root, int data);
-link_node *seek_next_tail(link_node *root);
-link_node *seek_prev_tail(link_node *root);
+link_node *seek_tail(link_node *root);
+link_node *seek_head(link_node *root);

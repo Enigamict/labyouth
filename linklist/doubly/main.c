@@ -15,10 +15,7 @@ int main() {
     print_node(n);
 
     testnode = seek_node(n,4);
-    link_node *testtail = seek_next_tail(n);
-
     n = delete_node(n,testnode);
 
     print_node(n);
-    print_prev_node(n);
 }

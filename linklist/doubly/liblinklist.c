@@ -30,7 +30,7 @@ void destroy_node(link_node *n) {
 int retrieve_data_node(link_node *n, int *data) {
 
     link_node *popNode;
-    popNode = seek_next_tail(n);
+    popNode = seek_tail(n);
     if (popNode == NULL) {
         return false;
     }
@@ -50,8 +50,11 @@ link_node *delete_node(link_node *root, link_node *node) {
     }
 
     if (node->next != NULL) {
-        node->prev->next = node->next;
-        node->prev->next->prev = node->prev;
+        link_node *next = node->next;
+        link_node *prev = node->prev;
+
+        node->prev->next = next;
+        node->prev->next->prev = prev;
         destroy_node(node);
         return root;
     }else{
@@ -73,12 +76,15 @@ link_node *seek_node(link_node *root, int data) {
         root = root->next;
     }
 
-    return NULL;
+    if (data != root->data) {
+        return NULL;
+    }
 
+    return root;
 }
 
 
-link_node *seek_next_tail(link_node *root) {
+link_node *seek_tail(link_node *root) {
 
     while (root->next != NULL) {
         root = root->next;
@@ -87,20 +93,22 @@ link_node *seek_next_tail(link_node *root) {
     return root;
 }
 
-link_node *seek_prev_tail(link_node *root) {
+link_node *seek_head(link_node *root) {
 
-    while (root->next != NULL) {
-        root = root->next;
+    link_node *head = seek_tail(root);
+
+    while (head->prev != NULL) {
+        head = head->prev;
     }
 
-    return root;
+    return head;
 }
 
 link_node *add_node(link_node *root, int data) {
 
     link_node *searchNode;
 
-    searchNode = seek_next_tail(root);
+    searchNode = seek_tail(root);
 
     if (searchNode == NULL) {
         return NULL;
@@ -130,7 +138,7 @@ void print_node(link_node *n) {
 
 void print_prev_node(link_node *n) {
  
-    link_node *prev = seek_next_tail(n);
+    link_node *prev = seek_tail(n);
 
     printf("list [");
     for (int i = 1; prev != NULL; i++, prev = prev->prev){
