@@ -14,7 +14,7 @@ int main() {
     n = add_node(n, 6);
     print_node(n);
 
-    testnode = seek_node(n,4);
+    testnode = seek_node(n,6);
     n = delete_node(n,testnode);
 
     print_node(n);

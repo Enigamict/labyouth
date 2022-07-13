@@ -53,8 +53,8 @@ link_node *delete_node(link_node *root, link_node *node) {
         link_node *next = node->next;
         link_node *prev = node->prev;
 
-        node->prev->next = next;
-        node->prev->next->prev = prev;
+        prev->next = next;
+        next->prev = prev;
         destroy_node(node);
         return root;
     }else{
@@ -67,20 +67,13 @@ link_node *delete_node(link_node *root, link_node *node) {
 }
 
 link_node *seek_node(link_node *root, int data) {
-
-    
-    while (root->next != NULL) {
-        if (data == root->data){
-            return root;
-        }
+ 
+    while (root) {
+        if (data == root->data) return root;
         root = root->next;
     }
 
-    if (data != root->data) {
-        return NULL;
-    }
-
-    return root;
+    return NULL;
 }
 
 
