@@ -80,15 +80,13 @@ link_node *add_node(link_node *root, int data) {
     }
 
     link_node *prev = addNode->prev;
-
-    if (root->next == NULL) {
-        prev->next = addNode;
-        return root;
-    }
-
     link_node *next = root->next;
 
     prev->next = addNode;
+
+    if (!next) 
+        return root;
+
     addNode->next = next;
     return root;
 }
@@ -120,6 +118,12 @@ link_node *head_get_data(link_node *root, int *data) {
 link_node *tail_add_node(link_node *root, int data) {
 
     add_node(seek_tail(root), data);
+    return root;
+}
+
+link_node *specify_add_node(link_node *root, link_node *node, int data) {
+
+    link_node* test = add_node(node, data);
     return root;
 }
 
