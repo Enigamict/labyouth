@@ -14,7 +14,7 @@ typedef struct link_node {
  * @return If malloc fails NULL
  *         
  */
-link_node *new_node(link_node *n, int data);
+link_node *uni_new_node(link_node *n, int data);
 
 /**
  * Destroy the Linkedlist node

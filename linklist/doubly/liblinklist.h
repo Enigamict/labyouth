@@ -54,7 +54,6 @@ link_node *delete_node(link_node *root, link_node *node);
  * @return returns node, or NULL if malloc fails. 
  *         
  */
-link_node *top_add_node(link_node *n, int data);
 
 /**
  * Data add the Linkedlist node
@@ -77,3 +76,6 @@ void print_prev_node(link_node *n);
 link_node *seek_node(link_node *root, int data);
 link_node *seek_tail(link_node *root);
 link_node *seek_head(link_node *root);
+link_node *tail_add_node(link_node *n, int data);
+link_node *tail_get_data(link_node *root, int *data);
+link_node *head_get_data(link_node *root, int *data);
