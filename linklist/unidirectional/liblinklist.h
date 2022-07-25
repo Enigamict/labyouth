@@ -1,10 +1,10 @@
 #pragma once
 
 
-typedef struct link_node {
+typedef struct link_node_uni {
     struct link_node *next; 
     int data;
-}link_node;
+}link_node_uni;
 
 /**
  * Initialize the Linkedlist node

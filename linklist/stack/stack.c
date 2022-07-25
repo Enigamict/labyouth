@@ -1,19 +1,62 @@
-#include <stdio.h> 
+#include <stack.h>
 #include <stdbool.h>
+#include <stdlib.h>
+#include <stdio.h>
 
-#include <liblinklist.h>
+stack *newStack() {
 
-int main() {
-    link_node *n = NULL;
-    link_node *test = NULL;
+    stack *node = malloc(sizeof(stack));
+
+    if (!node)
+        return NULL;
+    return node;
+}
+
+void deleteStack(stack *stack) {
+
+    free(stack);
+}
+
+stack *push_back(stack *stack, int data) {
+
+    link_node *node;
+
+    if (!stack->head) {
+        node = new_node(data);
+
+        stack->head = node;
+        stack->tail = node;
+        stack->tail->prev = NULL;
+        return stack;
+    }
+
+    node = new_node(data);
+    node->prev = stack->tail;
+
+    stack->tail->next = node;
+    stack->tail = node;
+    return stack;
+}
+
+stack *pop_back(stack *stack) {
+
+    link_node* tail = stack->tail;
+    stack->tail = stack->tail->prev;
+    destroy_node(tail);
+    return stack;
+}
+
+
+int peek(stack *stack) {
+
     int data;
+    data = stack->tail->data;
+    return data;
+}
 
-    n = new_node(NULL, NULL, 1);
-    n = tail_add_node(n, 2);
-    n = tail_add_node(n, 3);
-    n = tail_add_node(n, 4);
-    test = seek_node(n,3);
-    n = test_add_node(n, test, 5);
+bool isEmpty(stack *stack) {
 
-    print_node(n);
+    if (!stack->head && !stack->tail) return true;
+
+    return false;
 }

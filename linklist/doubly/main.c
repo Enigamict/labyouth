@@ -7,15 +7,10 @@ int main() {
     link_node *n = NULL;
     link_node *testnode = NULL;
 
-    n = new_node(NULL, NULL, 1);
-    n = add_node(n, 2);
-    n = add_node(n, 10);
-    n = add_node(n, 4);
-    n = add_node(n, 6);
-    print_node(n);
-
-    testnode = seek_node(n,6);
-    n = delete_node(n,testnode);
+    n = new_node(1);
+    add_next_node(n, 2);
+    add_next_node(n, 3);
+    add_next_node(n, 4);
 
     print_node(n);
 }

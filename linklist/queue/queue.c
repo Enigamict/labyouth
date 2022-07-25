@@ -7,11 +7,9 @@ int main() {
     link_node *n = NULL;
     int data;
 
-    n = new_node(NULL, NULL, 1);
-    n = tail_add_node(n, 2);
-    n = tail_add_node(n, 3);
-    n = tail_add_node(n, 4);
-    n = head_get_data(n, &data);
-    printf("%d", data);
+    n = new_node(1);
+    tail_add_node(n, 2);
+    tail_add_node(n, 3);
+    tail_add_node(n, 4);
     print_node(n);
 }

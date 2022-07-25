@@ -6,7 +6,7 @@
 #include "liblinklist.h"
 
 
-link_node *new_node(link_node *prev, link_node *next, int data) {
+link_node *new_node(int data) {
 
     link_node *newnode;
 
@@ -17,8 +17,7 @@ link_node *new_node(link_node *prev, link_node *next, int data) {
     }
 
     newnode->data = data;
-    newnode->prev = prev;
-    newnode->next = next;
+
     return newnode;
 }
 
@@ -69,62 +68,40 @@ link_node *seek_tail(link_node *root) {
 }
 
 
-link_node *add_node(link_node *root, int data) {
+link_node *add_next_node(link_node *root, int data) {
 
     link_node *addNode;
 
-    addNode = new_node(root, NULL, data);
+    addNode = new_node(data);
 
-    if (addNode == NULL) {
+    if (!addNode)
         return NULL;
-    }
+
+    addNode->prev = root;
 
     link_node *prev = addNode->prev;
     link_node *next = root->next;
 
     prev->next = addNode;
 
-    if (!next) 
-        return root;
-
     addNode->next = next;
     return root;
 }
 
-link_node *tail_get_data(link_node *root, int *data) {
-
-    link_node* getNode = seek_tail(root);
-
-    *data = getNode->data;
-
-    link_node *prev = getNode->prev;
-    prev->next = NULL;
-
-    destroy_node(getNode);
-    return root;
-}
-
-link_node *head_get_data(link_node *root, int *data) {
-
-    link_node* getNode = root->next;
-
-    *data = root->data;
-    getNode->prev = NULL;
+link_node *pop_node(link_node *root) {
 
     destroy_node(root);
-    return getNode;
-}
-
-link_node *tail_add_node(link_node *root, int data) {
-
-    add_node(seek_tail(root), data);
     return root;
 }
 
-link_node *specify_add_node(link_node *root, link_node *node, int data) {
+link_node *pop_front(link_node *root) {
 
-    link_node* test = add_node(node, data);
-    return root;
+    link_node* next = root->next;
+
+    next->prev = NULL;
+
+    destroy_node(root);
+    return next;
 }
 
 void print_node(link_node *n) {
