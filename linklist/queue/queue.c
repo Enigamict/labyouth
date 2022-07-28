@@ -1,15 +1,18 @@
-#include <stdio.h> 
+#include <queue.h>
 #include <stdbool.h>
+#include <stdlib.h>
+#include <stdio.h>
 
-#include <liblinklist.h>
+queue *newQueue() {
 
-int main() {
-    link_node *n = NULL;
-    int data;
+    queue *node = malloc(sizeof(queue));
 
-    n = new_node(1);
-    tail_add_node(n, 2);
-    tail_add_node(n, 3);
-    tail_add_node(n, 4);
-    print_node(n);
+    if (!node)
+        return NULL;
+    return node;
+}
+
+void deleteQueue(queue *stack) {
+
+    free(stack);
 }

@@ -13,11 +13,8 @@ int main() {
     push_back(n, 3);
     push_back(n, 4);
     push_back(n, 5);
-    print_node(n->tail);
-
-    link_node *test = seek_node(n->tail, 2);
-    add_next_node(test,6);
-    print_node(n->tail);
     print_prev_node(n->tail);
 
+    pop_back(n);
+    print_prev_node(n->tail);
 }

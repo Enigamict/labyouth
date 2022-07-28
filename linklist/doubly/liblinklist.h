@@ -7,6 +7,9 @@ typedef struct link_node {
     int data;
 }link_node;
 
+#define NODE_NEXT(X) (X)->next
+
+
 /**
  * Initialize the Linkedlist node
  *
@@ -44,7 +47,7 @@ int retrieve_data_node(link_node *n, int *data);
  * @return if the point is less than false
  *         
  */
-link_node *delete_node(link_node *root, link_node *node);
+link_node *delete_node(link_node *node);
 
 /**
  * Top add the Linkedlist node
@@ -75,8 +78,7 @@ void print_node(link_node *n);
 void print_prev_node(link_node *n);
 link_node *seek_node(link_node *root, int data);
 link_node *seek_tail(link_node *root);
-link_node *seek_head(link_node *root);
 link_node *tail_add_node(link_node *n, int data);
-link_node *test_add_node(link_node *root, link_node *node, int data);
 link_node *pop_node(link_node *root);
 link_node *pop_front(link_node *root);
+link_node *add_prev_node(link_node *n, int data);

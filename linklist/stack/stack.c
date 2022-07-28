@@ -30,11 +30,15 @@ stack *push_back(stack *stack, int data) {
         return stack;
     }
 
-    node = new_node(data);
-    node->prev = stack->tail;
+    if (stack->len) {
+        add_next_node(NODE_NEXT(stack->tail), data);
+        stack->len++;
+        return stack;
+    }
 
-    stack->tail->next = node;
-    stack->tail = node;
+    add_next_node(stack->tail, data);
+    stack->len++;
+    print_node(stack->tail);
     return stack;
 }
 
