@@ -13,7 +13,9 @@ typedef struct stack {
 }stack;
 
 stack *newStack();
+void deleteStack(stack *stack);
 stack *push_back(stack *stack, int data);
-stack *pop_back(stack *stack);
+void pop_back(stack *stack);
 int peek(stack *stack);
 bool isEmpty(stack *stack);
+size_t get_size(const stack *stack);

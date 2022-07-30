@@ -1,20 +1,21 @@
 #include <stdio.h> 
 #include <stdbool.h>
 
-#include <stack.h>
+#include <queue.h>
 
 int main() {
-    stack *n = NULL;
+    queue *q = NULL;
 
-    n = newStack();
+    q = newQueue();
 
-    push_back(n, 1);
-    push_back(n, 2);
-    push_back(n, 3);
-    push_back(n, 4);
-    push_back(n, 5);
-    print_prev_node(n->tail);
+    push(q, 1);
+    push(q, 2);
+    push(q, 3);
+    push(q, 4);
+    push(q, 5);
 
-    pop_back(n);
-    print_prev_node(n->tail);
+    print_node(q->head);
+    pop(q);
+    print_node(q->head);
+    deleteQueue(q);
 }

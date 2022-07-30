@@ -9,11 +9,18 @@ stack *newStack() {
 
     if (!node)
         return NULL;
+
+    node->head = NULL;
+    node->tail = NULL;
+    node->len = 0;
+
     return node;
 }
 
 void deleteStack(stack *stack) {
 
+    destroy_node(stack->head);
+    destroy_node(stack->tail);
     free(stack);
 }
 
@@ -26,28 +33,32 @@ stack *push_back(stack *stack, int data) {
 
         stack->head = node;
         stack->tail = node;
-        stack->tail->prev = NULL;
         return stack;
     }
 
-    if (stack->len) {
-        add_next_node(NODE_NEXT(stack->tail), data);
-        stack->len++;
-        return stack;
-    }
 
-    add_next_node(stack->tail, data);
+    stack->tail = add_next_node(stack->tail, data);
     stack->len++;
-    print_node(stack->tail);
     return stack;
 }
 
-stack *pop_back(stack *stack) {
+void pop_back(stack *stack) {
 
-    link_node* tail = stack->tail;
-    stack->tail = stack->tail->prev;
-    destroy_node(tail);
-    return stack;
+    link_node *node = pop_node(stack->tail);
+    stack->tail = node;
+}
+
+size_t get_size(const stack *stack) {
+
+    size_t size = 0;
+    const link_node *node = stack->head;
+
+    while (node) {
+        node = node->next;
+        size++;
+    } 
+
+    return size;
 }
 
 

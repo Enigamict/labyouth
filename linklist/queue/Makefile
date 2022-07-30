@@ -1,7 +1,7 @@
 CC = gcc
 MAIN = main.c
 LIBS = ../doubly
-CFLAGS = -Wall -Wextra -O2
+CFLAGS = -Wall -Wextra -g -fsanitize=address
 DEBUGFLAGS = -Wall -Wextra -g
 DEBUGFLAGS_SANTIZE = -Wall -Wextra -g -fsanitize=address
 

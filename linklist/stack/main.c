@@ -13,11 +13,9 @@ int main() {
     push_back(n, 3);
     push_back(n, 4);
     push_back(n, 5);
-    print_node(n->tail);
+    print_node(n->head);
+    printf("%ld\n", get_size(n)); 
 
-    link_node *test = seek_node(n->tail, 2);
-    add_next_node(test,6);
-    print_node(n->tail);
-    print_prev_node(n->tail);
-
+    print_node(n->head);
+    deleteStack(n);
 }

@@ -18,7 +18,7 @@ link_node *new_node(int data) {
 
     newnode->data = data;
     newnode->next = NULL;
-    newnode->next = NULL;
+    newnode->prev = NULL;
 
     return newnode;
 }
@@ -46,7 +46,7 @@ link_node *delete_node(link_node *node) {
         next->prev = prev;
 
     destroy_node(node);
-    return node;
+    return prev;
 }
 
 link_node *seek_node(link_node *root, int data) {
@@ -76,8 +76,9 @@ link_node *add_next_node(link_node *node, int data) {
 
     addNode = new_node(data);
 
-    if (!addNode)
+    if (!addNode) {
         return NULL;
+    }
 
     link_node *next = node->next;
 
@@ -85,12 +86,11 @@ link_node *add_next_node(link_node *node, int data) {
     addNode->next = next;
     addNode->prev = node;
 
-    if (!next)
-        return node;
+    if (next) {
+        next->prev = addNode;
+    }
 
-    next->prev = addNode;
-
-    return node;
+    return addNode;
 }
 
 link_node *add_prev_node(link_node *node, int data) {
@@ -122,22 +122,18 @@ link_node *add_prev_node(link_node *node, int data) {
     return node;
 }
 
-link_node *pop_node(link_node *root) {
-
-    destroy_node(root);
-    return root;
+link_node *pop_node(link_node *node) {
+    
+    link_node *newNode = delete_node(node);
+    return newNode;
 }
 
-
-link_node *pop_front(link_node *root) {
-
-    link_node* next = root->next;
-
-    next->prev = NULL;
-
-    destroy_node(root);
-    return next;
+link_node *pop_front_node(link_node *root) {
+    
+    link_node *node = delete_node(root);
+    return node;
 }
+
 
 void print_node(link_node *n) {
 

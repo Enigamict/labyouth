@@ -80,5 +80,5 @@ link_node *seek_node(link_node *root, int data);
 link_node *seek_tail(link_node *root);
 link_node *tail_add_node(link_node *n, int data);
 link_node *pop_node(link_node *root);
-link_node *pop_front(link_node *root);
+link_node *pop_front_node(link_node *root);
 link_node *add_prev_node(link_node *n, int data);
