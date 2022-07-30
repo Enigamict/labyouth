@@ -64,9 +64,7 @@ size_t get_size(const stack *stack) {
 
 int peek(stack *stack) {
 
-    int data;
-    data = stack->tail->data;
-    return data;
+    return stack->tail->data;
 }
 
 bool isEmpty(stack *stack) {

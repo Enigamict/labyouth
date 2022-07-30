@@ -17,9 +17,9 @@ queue *newQueue() {
     return node;
 }
 
-void deleteQueue(queue *stack) {
+void deleteQueue(queue *queue) {
 
-    free(stack);
+    free(queue);
 }
 
 queue *push(queue *queue, int data) {
@@ -40,11 +40,10 @@ queue *push(queue *queue, int data) {
     return queue;
 }
 
-queue *pop(queue *queue) {
+void pop(queue *queue) {
 
     link_node *node = pop_front_node(queue->head);
     queue->head = node;
-    return queue;
 }
 
 int top(queue *queue) {

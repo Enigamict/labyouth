@@ -14,6 +14,6 @@ typedef struct queue {
 queue *newQueue();
 void deleteQueue(queue *queue);
 queue *push(queue *queue, int data);
-queue *pop(queue *queue);
+void pop(queue *queue);
 int top(queue *queue);
 bool isEmpty(queue *queue);
