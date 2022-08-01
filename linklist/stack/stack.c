@@ -19,8 +19,17 @@ stack *newStack() {
 
 void deleteStack(stack *stack) {
 
-    destroy_node(stack->head);
-    destroy_node(stack->tail);
+    link_node *node = NULL;
+    link_node *next = NULL;
+
+    for (node = stack->head; node != NULL; node = next) {
+        next = NODE_NEXT(node);
+        destroy_node(node);
+    }
+
+    stack->head = NULL;
+    stack->tail = NULL;
+    stack->len = 0;
     free(stack);
 }
 

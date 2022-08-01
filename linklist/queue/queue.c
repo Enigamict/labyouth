@@ -7,8 +7,9 @@ queue *newQueue() {
 
     queue *node = malloc(sizeof(queue));
 
-    if (!node)
+    if (!node) {
         return NULL;
+    }
 
     node->head = NULL;
     node->tail = NULL;
@@ -19,7 +20,19 @@ queue *newQueue() {
 
 void deleteQueue(queue *queue) {
 
+    link_node *node = NULL;
+    link_node *next = NULL;
+
+    for (node = queue->head; node != NULL; node = next){
+        next = NODE_NEXT(node);
+        destroy_node(node);
+    }
+
+    queue->head = NULL;
+    queue->tail = NULL;
+    queue->len = 0;
     free(queue);
+
 }
 
 queue *push(queue *queue, int data) {
