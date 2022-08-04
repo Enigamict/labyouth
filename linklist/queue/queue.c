@@ -35,12 +35,12 @@ void deleteQueue(queue *queue) {
 
 }
 
-queue *push(queue *queue, int data) {
+queue *push(queue *queue, int data, const char *addr) {
 
     link_node *node;
 
     if (!queue->head) {
-        node = new_node(data);
+        node = new_node(data, addr);
 
         queue->head = node;
         queue->tail = node;
@@ -48,14 +48,14 @@ queue *push(queue *queue, int data) {
     }
 
 
-    queue->tail = add_next_node(queue->tail, data);
+    queue->tail = add_next_node(queue->tail, data, addr);
     queue->len++;
     return queue;
 }
 
 void pop(queue *queue) {
 
-    link_node *node = pop_front_node(queue->head);
+    link_node *node = pop_node(queue->head);
     queue->head = node;
 }
 

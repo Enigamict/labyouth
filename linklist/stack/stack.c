@@ -33,12 +33,12 @@ void deleteStack(stack *stack) {
     free(stack);
 }
 
-stack *push_back(stack *stack, int data) {
+stack *push_back(stack *stack, int data, const char *addr) {
 
     link_node *node;
 
     if (!stack->head) {
-        node = new_node(data);
+        node = new_node(data, addr);
 
         stack->head = node;
         stack->tail = node;
@@ -46,7 +46,7 @@ stack *push_back(stack *stack, int data) {
     }
 
 
-    stack->tail = add_next_node(stack->tail, data);
+    stack->tail = add_next_node(stack->tail, data, addr);
     stack->len++;
     return stack;
 }

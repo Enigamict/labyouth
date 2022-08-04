@@ -8,11 +8,11 @@ int main() {
 
     q = newQueue();
 
-    push(q, 1);
-    push(q, 2);
-    push(q, 3);
-    push(q, 4);
-    push(q, 5);
+    push(q, 1, "1.1.1.1");
+    push(q, 2, "1.1.1.2");
+    push(q, 3, "1.1.1.3");
+    push(q, 4, "1.1.1.4");
+    push(q, 5, "1.1.1.5");
 
     print_node(q->head);
     pop(q);
