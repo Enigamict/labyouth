@@ -6,7 +6,7 @@
 #include "liblinklist.h"
 
 
-link_node *new_node(int data, const char *addr) {
+link_node *new_node(int data) {
 
     link_node *newnode;
 
@@ -17,7 +17,6 @@ link_node *new_node(int data, const char *addr) {
     }
 
     newnode->data = data;
-    inet_pton(AF_INET, addr, &newnode->addr); 
     newnode->next = NULL;
     newnode->prev = NULL;
 
@@ -72,11 +71,11 @@ link_node *seek_tail(link_node *root) {
 }
 
 
-link_node *add_next_node(link_node *node, int data, const char *addr) {
+link_node *add_next_node(link_node *node, int data) {
 
     link_node *addNode;
 
-    addNode = new_node(data, addr);
+    addNode = new_node(data);
 
     if (!addNode) {
         return NULL;
@@ -95,11 +94,11 @@ link_node *add_next_node(link_node *node, int data, const char *addr) {
     return addNode;
 }
 
-link_node *add_prev_node(link_node *node, int data, const char *addr) {
+link_node *add_prev_node(link_node *node, int data) {
 
     link_node *addNode;
 
-    addNode = new_node(data, addr);
+    addNode = new_node(data);
 
     if (!addNode) {
         return NULL;
@@ -107,17 +106,8 @@ link_node *add_prev_node(link_node *node, int data, const char *addr) {
 
     link_node *next = node->next;
 
-    if (!next){
-        node->next = addNode;
-        addNode->next = next;
-        addNode->prev = node;
-        return node;
-    }
-
-    link_node *prev = node->next->prev;
-
     next->prev = addNode;
-    addNode->prev = prev;
+    addNode->prev = node;
 
     addNode->next = next;
     node->next = addNode;
@@ -134,12 +124,9 @@ link_node *pop_node(link_node *node) {
 
 void print_node(link_node *n) {
 
-    char addr_str[256];
-
     printf("list [");
     for (int i = 1; n != NULL; i++, n = n->next){
-        inet_ntop(AF_INET, &n->addr, addr_str ,256);
-        printf("%10s", addr_str);
+        printf("%3d", n->data);
     }
     printf("]\n");
 }

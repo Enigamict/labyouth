@@ -13,7 +13,7 @@ typedef struct queue {
 
 queue *newQueue();
 void deleteQueue(queue *queue);
-queue *push(queue *queue, int data, const char *addr);
+queue *push(queue *queue, int data);
 void pop(queue *queue);
 int top(queue *queue);
 bool isEmpty(queue *queue);

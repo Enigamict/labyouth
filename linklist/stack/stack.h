@@ -20,7 +20,7 @@ typedef struct stack_addr {
 
 stack *newStack();
 void deleteStack(stack *stack);
-stack *push_back(stack *stack, int data, const char *addr);
+stack *push_back(stack *stack, int data);
 void pop_back(stack *stack);
 int peek(stack *stack);
 bool isEmpty(stack *stack);

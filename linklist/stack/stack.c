@@ -23,7 +23,7 @@ void deleteStack(stack *stack) {
     link_node *next = NULL;
 
     for (node = stack->head; node != NULL; node = next) {
-        next = NODE_NEXT(node);
+        next = node->next;
         destroy_node(node);
     }
 
@@ -33,12 +33,12 @@ void deleteStack(stack *stack) {
     free(stack);
 }
 
-stack *push_back(stack *stack, int data, const char *addr) {
+stack *push_back(stack *stack, int data) {
 
     link_node *node;
 
     if (!stack->head) {
-        node = new_node(data, addr);
+        node = new_node(data);
 
         stack->head = node;
         stack->tail = node;
@@ -46,7 +46,7 @@ stack *push_back(stack *stack, int data, const char *addr) {
     }
 
 
-    stack->tail = add_next_node(stack->tail, data, addr);
+    stack->tail = add_next_node(stack->tail, data);
     stack->len++;
     return stack;
 }
@@ -73,12 +73,11 @@ size_t get_size(const stack *stack) {
 
 int peek(stack *stack) {
 
+    assert(stack->tail);
     return stack->tail->data;
 }
 
 bool isEmpty(stack *stack) {
 
-    if (!stack->head && !stack->tail) return true;
-
-    return false;
+    return !stack->head && !stack->tail;
 }

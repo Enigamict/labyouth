@@ -1,16 +1,13 @@
 #pragma once
 
-#include <netinet/in.h>
-#include <arpa/inet.h>
+ #include <assert.h>
 
 typedef struct link_node {
     struct link_node *next; 
     struct link_node *prev; 
     int data;
-    struct in_addr addr;
 }link_node;
 
-#define NODE_NEXT(X) (X)->next
 
 
 /**
@@ -21,7 +18,7 @@ typedef struct link_node {
  * @return If malloc fails NULL
  *         
  */
-link_node *new_node(int data, const char *addr);
+link_node *new_node(int data);
 
 /**
  * Destroy the Linkedlist node
@@ -69,7 +66,7 @@ link_node *delete_node(link_node *node);
  * @return if malloc fails or add fails. 
  *         
  */
-link_node *add_next_node(link_node *n, int data, const char *addr);
+link_node *add_next_node(link_node *n, int data);
 
 /**
  * Print the Linkedlist node
@@ -84,4 +81,4 @@ link_node *seek_tail(link_node *root);
 link_node *tail_add_node(link_node *n, int data);
 link_node *pop_node(link_node *root);
 link_node *pop_front_node(link_node *root);
-link_node *add_prev_node(link_node *n, int data, const char *addr);
+link_node *add_prev_node(link_node *n, int data);

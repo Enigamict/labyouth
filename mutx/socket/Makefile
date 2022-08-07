@@ -1,12 +1,14 @@
 CC = gcc
 MAIN = main
-CFLAGS = -Wall -Wextra -pthread
+LIBS = ../doubly
+CFLAGS = -Wall -Wextra 
 DEBUGFLAGS = -Wall -Wextra -g
 DEBUGFLAGS_SANTIZE = -Wall -Wextra -g -fsanitize=address
 
 
 all :
-	$(CC) $(CFLAGS) -I./ -o main main.c
+	$(CC) $(CFLAGS) -o client client.c
+	$(CC) $(CFLAGS) -o server server.c
 
 debug :
 	$(CC) $(MAIN) $(LIBS) $(DEBUGFLAGS)

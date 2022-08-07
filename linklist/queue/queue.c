@@ -13,7 +13,7 @@ queue *newQueue() {
 
     node->head = NULL;
     node->tail = NULL;
-    node->tail = NULL;
+    node->len = 0;
 
     return node;
 }
@@ -24,7 +24,7 @@ void deleteQueue(queue *queue) {
     link_node *next = NULL;
 
     for (node = queue->head; node != NULL; node = next){
-        next = NODE_NEXT(node);
+        next = node->next;
         destroy_node(node);
     }
 
@@ -35,12 +35,12 @@ void deleteQueue(queue *queue) {
 
 }
 
-queue *push(queue *queue, int data, const char *addr) {
+queue *push(queue *queue, int data) {
 
     link_node *node;
 
     if (!queue->head) {
-        node = new_node(data, addr);
+        node = new_node(data);
 
         queue->head = node;
         queue->tail = node;
@@ -48,7 +48,7 @@ queue *push(queue *queue, int data, const char *addr) {
     }
 
 
-    queue->tail = add_next_node(queue->tail, data, addr);
+    queue->tail = add_next_node(queue->tail, data);
     queue->len++;
     return queue;
 }
@@ -61,6 +61,7 @@ void pop(queue *queue) {
 
 int top(queue *queue) {
 
+    assert(queue->head);
     return queue->head->data;
 }
 

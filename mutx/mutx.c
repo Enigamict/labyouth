@@ -1,7 +1,4 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <pthread.h>
+#include <mutx.h>
 
 typedef struct pth_data {
     int data;
@@ -9,6 +6,22 @@ typedef struct pth_data {
 }pth_data;
 
 int sum = 0;
+
+// boolに変更する, それかこの中でエラーを出す
+int mutexInit(struct pth_data *pth) {
+
+    pthread_mutex_init(&pth->mutex, NULL);
+}
+
+int lock(struct pth_data *pth) {
+
+    pthread_mutex_lock(&pth->mutex);
+}
+
+int unlock(struct pth_data *pth) {
+
+    pthread_mutex_unlock(&pth->mutex);
+}
 
 void *adddata(void *arg) {
     int i;
@@ -34,22 +47,4 @@ void *subdata(void *arg) {
         pthread_mutex_unlock(&pdata->mutex);
     }
     return NULL;
-}
-
-int main() {
-    pthread_t thread1;
-    pthread_t thread2;
-    pth_data p;
-
-    pthread_mutex_init(&p.mutex, NULL);
-
-    pthread_create(&thread1, NULL, &adddata, &p);
-    pthread_create(&thread2, NULL, &subdata, &p);
-
-    pthread_join(thread1, NULL);
-    pthread_join(thread2, NULL);
-
-    pthread_mutex_destroy(&p.mutex);
-
-    printf("%d\n", p.data);
 }
