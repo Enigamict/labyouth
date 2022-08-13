@@ -1,50 +1,42 @@
-#include <mutx.h>
+#include "mutx.h"
 
-typedef struct pth_data {
-    int data;
-    pthread_mutex_t mutex;
-}pth_data;
+pth_data PthMutexInit() {
 
-int sum = 0;
-
-// boolに変更する, それかこの中でエラーを出す
-int mutexInit(struct pth_data *pth) {
-
-    pthread_mutex_init(&pth->mutex, NULL);
+    pth_data pth;
+    pthread_mutex_init(&pth.mutex, NULL);
+    pth.data = 0;
+    return pth;
 }
 
-int lock(struct pth_data *pth) {
+bool newThread(pthread_t *thread, void (*func), pth_data *pth) {
 
-    pthread_mutex_lock(&pth->mutex);
-}
+    int ret;
+    
+    ret = pthread_create(thread, NULL, func, pth);
 
-int unlock(struct pth_data *pth) {
-
-    pthread_mutex_unlock(&pth->mutex);
-}
-
-void *adddata(void *arg) {
-    int i;
-    pth_data *pdata = (pth_data*)arg;
-
-    for (i = 0; i < 1000000; i++) {
-        pthread_mutex_lock(&pdata->mutex);
-        pdata->data = sum + i;
-        sum++;
-        pthread_mutex_unlock(&pdata->mutex);
+    if (ret != 0) {
+        return false;
     }
-    return NULL;
+
+    return true;
 }
 
-void *subdata(void *arg) {
-    int i;
-    pth_data *pdata = (pth_data*)arg;
+int lock(pthread_mutex_t *mutx) {
 
-    for (i = 0; i < 1000000; i++) {
-        pthread_mutex_lock(&pdata->mutex);
-        pdata->data = sum - i;
-        sum--;
-        pthread_mutex_unlock(&pdata->mutex);
-    }
-    return NULL;
+    return pthread_mutex_lock(mutx);
+}
+
+int unlock(pthread_mutex_t *mutx) {
+
+    return pthread_mutex_unlock(mutx);
+}
+
+int mutxJoin(pthread_t thread) {
+
+    return pthread_join(thread, NULL);
+}
+
+void mutexDestroy(pthread_mutex_t *mutx) {
+
+    pthread_mutex_destroy(mutx);
 }

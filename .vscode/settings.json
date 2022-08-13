@@ -6,6 +6,13 @@
         "string_view": "c",
         "cmath": "cpp",
         "limits": "cpp",
-        "type_traits": "cpp"
+        "type_traits": "cpp",
+        "stdbool.h": "c",
+        "__availability": "c",
+        "__mutex_base": "c",
+        "atomic": "c",
+        "memory": "c",
+        "mutex": "c",
+        "__threading_support": "c"
     }
 }
