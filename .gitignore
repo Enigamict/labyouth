@@ -1,6 +1,9 @@
 main
 stacktest
 queuetest
+server
+client
 a.out
 *.a
 *.o
+*.dSYM
