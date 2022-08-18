@@ -5,18 +5,25 @@
 #include <string.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include <unistd.h>
 
-void *test_connect(void *arg) {
+void *socketThreadRecv(void *arg) {
 
   int n;
   int sock0 = *(int *)arg;
   char buf[32];
 
   while (1) {
-    printf("%d", sock0);
     n = recv(sock0, buf, sizeof(buf), 0);
+    if (n == 0) {
+      printf("client close\n"); 
+      close(sock0);
+      break;
+    }
     printf("%d, %s\n", n, buf);
   }
+
+  return NULL;
 
 }
 
@@ -25,7 +32,7 @@ int main() {
   int sock;
   struct sockaddr_in addr;
   struct sockaddr_in client;
-  pthread_t thread1;
+  pthread_t thread;
 
   socklen_t socklen = sizeof(client);
 
@@ -41,7 +48,7 @@ int main() {
   while (1){
     printf("connect\n");
     sock = accept(sock0, (struct sockaddr *)&client, &socklen);
-    pthread_create(&thread1, NULL, test_connect, (void *)&sock);
+    pthread_create(&thread, NULL, socketThreadRecv, (void *)&sock);
   }
 
   return 0;
