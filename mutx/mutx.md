@@ -86,3 +86,15 @@ pthread_mutex_unlock(&pdata->mutex);
 int pthread_join(pthread_t thread, void **retval);
 
 pthread_join()はスレッドの終了を待つ
+
+pthread_tはスレッドの識別子
+
+表示させる
+```
+newThread(&thread1, (void *)loop1, &pth);
+printf("%p\n", thread1);
+newThread(&thread2, (void *)loop2, &pth);
+printf("%p\n", thread2);
+newThread(&thread3, (void *)loop3, &pth);
+printf("%p\n", thread3);
+```

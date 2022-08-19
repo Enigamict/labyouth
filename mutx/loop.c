@@ -41,17 +41,21 @@ int main() {
 
    pthread_t thread1, thread2, thread3;
    pth_data pth;
+   int test;
 
    pth = PthMutexInit();
 
    newThread(&thread1, (void *)loop1, &pth);
-   mutxJoin(thread1);
-
+   printf("%p\n", thread1);
    newThread(&thread2, (void *)loop2, &pth);
-   mutxJoin(thread2);
-
+   printf("%p\n", thread2);
    newThread(&thread3, (void *)loop3, &pth);
-   mutxJoin(thread3);
+   printf("%p\n", thread3);
+
+   test = threadJoin(thread1);
+   printf("test:%d\n", test);
+   threadJoin(thread2);
+   threadJoin(thread3);
 
    printf("pdata:%d", pth.data);
    mutexDestroy(&pth.mutex);

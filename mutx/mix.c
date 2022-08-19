@@ -26,8 +26,8 @@ int main() {
    pth = PthMutexInit();
 
    newThread(&thread1, (void *)change1, &pth);
-   mutxJoin(thread1);
    newThread(&thread2, (void *)change2, &pth);
+   mutxJoin(thread1);
    mutxJoin(thread2);
 
 

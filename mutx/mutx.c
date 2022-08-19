@@ -31,7 +31,7 @@ int unlock(pthread_mutex_t *mutx) {
     return pthread_mutex_unlock(mutx);
 }
 
-int mutxJoin(pthread_t thread) {
+int threadJoin(pthread_t thread) {
 
     return pthread_join(thread, NULL);
 }

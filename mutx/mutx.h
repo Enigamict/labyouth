@@ -17,5 +17,5 @@ pth_data PthMutexInit();
 bool newThread(pthread_t *thread, void (*func), pth_data *pth);
 int lock(pthread_mutex_t *mutx);
 int unlock(pthread_mutex_t *mutx);
-int mutxJoin(pthread_t thread);
+int threadJoin(pthread_t thread);
 void mutexDestroy(pthread_mutex_t *mutx);
