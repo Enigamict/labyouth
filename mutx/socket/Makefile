@@ -8,3 +8,8 @@ DEBUGFLAGS_SANTIZE = -Wall -Wextra -g -fsanitize=address
 all :
 	$(CC) $(CFLAGS) -o client client.c
 	$(CC) $(CFLAGS) -o server server.c
+
+
+.PHONY: clean
+clean:
+	rm client server
