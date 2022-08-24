@@ -4,10 +4,13 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <string.h>
+#include <unistd.h>
 
 int main(int argc ,char** argv) {
     struct sockaddr_in server;
     int sock;
+    char buf[32];
+    int n = 0;
 
     sock = socket(AF_INET, SOCK_STREAM, 0);
 
@@ -30,7 +33,14 @@ int main(int argc ,char** argv) {
             printf("send error\n");
             break;
         }
+        n = recv(sock, buf, sizeof(buf), 0);
+        printf("%d, %s\n", n, buf);
+        if (strcmp(buf ,"end") == 0) {
+            break;
+        }
     }
+
+    close(sock);
 
 
     return 0;
