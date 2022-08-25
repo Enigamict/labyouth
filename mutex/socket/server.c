@@ -38,10 +38,11 @@ socketThread *stInit() {
 
 void *socketThreadRecv(void *arg) {
 
-  int n;
+  int n = 1;
   char buf[32];
   socketThread *st = (socketThread*)arg;
   int sock0 = st->sock;
+  int data;
   char *sendbuf;
   printf("client hello\n");
   printf("%d", sock0);
@@ -49,15 +50,11 @@ void *socketThreadRecv(void *arg) {
 
   while (1) {
     printf("count data:%d\n", st->data);
-    if (st->data == 10) {
-      printf("data max\n"); 
-      st->data++;
-      break;
-    }
 
     n = recv(sock0, buf, sizeof(buf), 0);
+    data = st->data;
 
-    if (st->data > 10) {
+    if (data > 9) {
       printf("saisaku syori\n"); 
       break;
     }
@@ -99,6 +96,7 @@ int main() {
   addr.sin_addr.s_addr = INADDR_ANY;
 
   int val = 1;
+  int count;
   ioctl(sock0, FIONBIO, &val);
   bind(sock0, (struct sockaddr *)&addr, sizeof(addr));
   listen(sock0, 5);
@@ -108,15 +106,17 @@ int main() {
 
     if (st->sock > 0) {
       pthread_create(&st->thread[st->cnt++], NULL, socketThreadRecv, st); 
-      sock_list[st->cnt - 1] = st->sock;
+      count = st->cnt - 1;
+      sock_list[count] = st->sock;
 
-    }else if (st->data == 11) {
+    }else if (st->data == 10) {
       printf("main break\n");
       sendbuf = "end";
       for (int i = 0; i < st->cnt; i++) {
         send(sock_list[i], sendbuf, sizeof(char) + 3, 0);
         close(sock_list[i]);
       }
+
       break;
 
     }else if(st->delthread) {
@@ -128,7 +128,10 @@ int main() {
   }
 
   for (int i = 0; i < st->cnt; i++) {
-    pthread_join(st->thread[i], NULL);
+    printf("thread join\n");
+    int test;
+    test = pthread_join(st->thread[i], NULL);
+    printf("join:%d\n", test);
   }
 
   free(st);
