@@ -5,7 +5,7 @@
             "name": "server.c",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/mutx/socket/server",
+            "program": "${workspaceFolder}/mutex/socket/server",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
