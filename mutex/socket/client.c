@@ -6,7 +6,6 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "msg.h"
 
 int main(int argc ,char** argv) {
     struct sockaddr_in server;
