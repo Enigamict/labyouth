@@ -8,16 +8,19 @@
 pthread_mutex_t m = PTHREAD_MUTEX_INITIALIZER;
 int thread_count = 0;
 
-const size_t loop_max = 100000;
+const int loop_max = 100000;
 
-void *ret1() {
-    for (size_t i = 0; i < loop_max; i++){
+void *ret1(void *arg) {
+
+    int thread_loop = *(int*)arg;
+
+    for (int i = 0; i < thread_loop; i++){
         pthread_mutex_lock(&m);
         thread_count++;
         pthread_mutex_unlock(&m);
     }
 
-    for (size_t i = 0; i < loop_max; i++){
+    for (int i = 0; i < thread_loop; i++){
         pthread_mutex_lock(&m);
         thread_count--;
         pthread_mutex_unlock(&m);
@@ -29,16 +32,19 @@ void *ret1() {
 int main() {
 
    pthread_t thread[100];
+   int thread_data;
+   int main_loop = 100;
 
-   for (int i = 0; i < 100; i++) {
-        pthread_create(&thread[i], NULL, ret1, NULL);
+   for (int i = 0; i < main_loop; i++) {
+        thread_data = i * 1000;
+        pthread_create(&thread[i], NULL, ret1, &thread_data);
    }
 
-   for (int i = 0; i < 100; i++) {
+   for (int i = 0; i < main_loop; i++) {
         printf("thread ID:%p\n", thread[i]);
    }
 
-   for (int i = 0; i < 100; i++) {
+   for (int i = 0; i < main_loop; i++) {
         int join;
         join = pthread_join(thread[i], NULL);
         printf("join:%d\n", join);
