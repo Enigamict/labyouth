@@ -26,6 +26,8 @@ void *ret1(void *arg) {
         pthread_mutex_unlock(&m);
     }
 
+    printf("%d\n", thread_loop);
+
     return NULL;
 
 }
@@ -36,7 +38,9 @@ int main() {
    int main_loop = 100;
 
    for (int i = 0; i < main_loop; i++) {
+        pthread_mutex_lock(&m);
         thread_data = i * 1000;
+        pthread_mutex_unlock(&m);
         pthread_create(&thread[i], NULL, ret1, &thread_data);
    }
 
