@@ -9,6 +9,9 @@ OBJ=$(SRC:.c=.o)
 all :
 	$(CC) $(MAIN) $(CFLAGS) -o $(TARGET)
 
+case1 :
+	$(CC) $(MAIN) $(CFLAGS) -D early -o $(TARGET)
+
 debug :
 	$(CC) $(MAIN) $(LIBS) $(DEBUGFLAGS)
 	valgrind ./a.out

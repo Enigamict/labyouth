@@ -12,26 +12,13 @@ int thread_index = 0;
 int thread_loop[100];
 
 void *ret1() {
-//    pthread_mutex_lock(&m);
-//    int thread_loop_cnt = thread_loop[thread_index];
-//    printf("%d::%d\n", thread_index, thread_loop[thread_index]);
-//
-//
-//    for (int i = 0; i < thread_loop_cnt; i++) {
-//        thread_count++;
-//    }
-//
-//    for (int i = 0; i < thread_loop_cnt; i++){
-//        thread_count--;
-//    }
-//    printf("%d\n", thread_count);
-//    pthread_mutex_unlock(&m);
+
+    #ifdef early
 
     pthread_mutex_lock(&m);
     int thread_loop_cnt = thread_loop[thread_index];
     printf("%d::%d\n", thread_index, thread_loop[thread_index]);
     pthread_mutex_unlock(&m);
-
 
     pthread_mutex_lock(&m);
     for (int i = 0; i < thread_loop_cnt; i++) {
@@ -47,6 +34,22 @@ void *ret1() {
     pthread_mutex_unlock(&m);
 
     return NULL;
+    #else
+
+    pthread_mutex_lock(&m);
+    int thread_loop_cnt = thread_loop[thread_index];
+    printf("%d::%d\n", thread_index, thread_loop[thread_index]);
+    for (int i = 0; i < thread_loop_cnt; i++) {
+        thread_count++;
+    }
+    for (int i = 0; i < thread_loop_cnt; i++){
+        thread_count--;
+    }
+    printf("%d\n", thread_count);
+    pthread_mutex_unlock(&m);
+    return NULL;
+    #endif
+
 
 }
 int main() {
