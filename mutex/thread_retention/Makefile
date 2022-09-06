@@ -1,7 +1,7 @@
 CC = gcc
 MAIN = main.c
 TARGET = main
-CFLAGS = -Wall -Wextra -pthread -fsanitize=address
+CFLAGS = -Wall -Wextra -pthread -fsanitize=thread
 DEBUGFLAGS = -Wall -Wextra -g
 DEBUGFLAGS_SANTIZE = -Wall -Wextra -g -fsanitize=address
 OBJ=$(SRC:.c=.o)
