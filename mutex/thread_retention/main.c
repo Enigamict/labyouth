@@ -8,17 +8,13 @@
 
 pthread_mutex_t m = PTHREAD_MUTEX_INITIALIZER;
 int thread_count = 0;
-int thread_index = 0;
 int thread_loop[100];
 
-void *ret1() {
+void *ret1(int *ptr_thread_loop) {
 
-    #ifdef early
+#ifdef early
 
-    pthread_mutex_lock(&m);
-    int thread_loop_cnt = thread_loop[thread_index];
-    printf("%d::%d\n", thread_index, thread_loop[thread_index]);
-    pthread_mutex_unlock(&m);
+    int thread_loop_cnt = *ptr_thread_loop;
 
     pthread_mutex_lock(&m);
     for (int i = 0; i < thread_loop_cnt; i++) {
@@ -30,25 +26,22 @@ void *ret1() {
     for (int i = 0; i < thread_loop_cnt; i++){
         thread_count--;
     }
-    printf("%d\n", thread_count);
     pthread_mutex_unlock(&m);
 
     return NULL;
-    #else
+#else
 
+    int thread_loop_cnt = *ptr_thread_loop;
     pthread_mutex_lock(&m);
-    int thread_loop_cnt = thread_loop[thread_index];
-    printf("%d::%d\n", thread_index, thread_loop[thread_index]);
     for (int i = 0; i < thread_loop_cnt; i++) {
         thread_count++;
     }
     for (int i = 0; i < thread_loop_cnt; i++){
         thread_count--;
     }
-    printf("%d\n", thread_count);
     pthread_mutex_unlock(&m);
     return NULL;
-    #endif
+#endif
 
 
 }
@@ -59,11 +52,8 @@ int main() {
    clock_t begin = clock();
 
    for (int i = 0; i < main_loop; i++) {
-        pthread_mutex_lock(&m);
         thread_loop[i] = i * 1000;
-        thread_index = i;
-        pthread_mutex_unlock(&m);
-        pthread_create(&thread[i], NULL, ret1, NULL);
+        pthread_create(&thread[i], NULL, (void*)ret1, &thread_loop[i]);
    }
 
    for (int i = 0; i < main_loop; i++) {
