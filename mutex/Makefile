@@ -4,7 +4,7 @@ TARGET = main
 CFLAGS = -Wall -Wextra -pthread -fsanitize=address
 DEBUGFLAGS = -Wall -Wextra -g
 DEBUGFLAGS_SANTIZE = -Wall -Wextra -g -fsanitize=address
-OBJ=$(SRC:.c=.o)
+OBJ=$(MAIN:.c=.o)
 
 all :
 	$(CC) $(CFLAGS) -c mutx.c 

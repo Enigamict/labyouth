@@ -9,6 +9,7 @@ typedef struct queue {
     struct link_node *head; 
     struct link_node *tail;
     size_t len; 
+
 }queue;
 
 queue *newQueue();

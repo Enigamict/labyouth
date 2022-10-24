@@ -8,7 +8,7 @@ int main() {
         int data=0;
         pid_t pid=fork();
         if(pid==0) {
-                data=10;
+                data=11;
                 printf("child:%d\n", data);
                 exit(0);
         } else {
