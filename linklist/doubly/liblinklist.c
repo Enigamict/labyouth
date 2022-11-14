@@ -30,6 +30,10 @@ void destroy_node(link_node *n) {
 
 link_node *delete_node(link_node *node) {
 
+    if (node->prev == NULL && node->next == NULL) {
+        return NULL;
+    }
+
     if (!node->prev) {
         link_node *newRoot = node->next;
         destroy_node(node);
@@ -116,7 +120,7 @@ link_node *add_prev_node(link_node *node, int data) {
 }
 
 link_node *pop_node(link_node *node) {
-     
+ 
     return delete_node(node);
 }
 

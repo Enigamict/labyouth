@@ -1,8 +1,8 @@
 CC = gcc
 MAIN = main.c
-CFLAGS = -Wall -Wextra -pthread 
+CFLAGS = -Wall -Wextra -pthread
 DEBUGFLAGS = -Wall -Wextra -g
-DEBUGFLAGS_SANTIZE = -Wall -Wextra -g -fsanitize=address
+DEBUGFLAGS_SANTIZE = -Wall -Wextra -g -fsanitize=thread
 LIBS = ../linklist/doubly ../linklist/queue
 OBJ=$(MAIN:.c=.o)
 
@@ -13,4 +13,4 @@ all :
 
 .PHONY: clean
 clean:
-	$(RM) -rf $(OBJ) $(TARGET)
+	$(RM) -rf libqueue.a queue.o liblinklist.o main

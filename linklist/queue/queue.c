@@ -55,6 +55,11 @@ queue *push(queue *queue, int data) {
 
 void pop(queue *queue) {
 
+    if (queue->head == NULL) {
+        printf("queue error\n");
+        return;
+    }
+
     link_node *node = pop_node(queue->head);
     queue->head = node;
 }

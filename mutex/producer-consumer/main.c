@@ -15,36 +15,44 @@ queue *que;
 void *thread_push() {
 
     pthread_mutex_lock(&mut);
+
+    printf("que push = %p\n", que);
     push(que, 1);
-    push(que, 2);
-    push(que, 3);
-    push(que, 4);
-    push(que, 5);
     printf("push\n");
-    pthread_cond_broadcast(&cond);
     pthread_mutex_unlock(&mut);
+    pthread_cond_broadcast(&cond);
     return NULL;
 }
 
 void *thread_pop() { 
     pthread_mutex_lock(&mut);
 
+    printf("que pop = %p\n", que);
     if (isEmpty(que)) {
-        pthread_mutex_unlock(&mut); // lockをかける理由としてifまでの間にメソッドが入らないようにするため
+        //pthread_mutex_unlock(&mut); // lockをかける理由としてifまでの間にメソッドが入らないようにするため
+        printf("wait\n");
         pthread_cond_wait(&cond, &mut); // 解放した後はまたロック
+        printf("wait end\n");
     }
 
+    printf("pop\n");
+    printf("que pop2 = %p\n", que);
     pop(que);
     pthread_mutex_unlock(&mut); // unlock 
     return NULL;
 }
+int main1() {
+    que = newQueue();
+    push(que, 1);
+    pop(que);
+    pop(que);
 
+}
 int main() {
 
     pthread_t th1, th2, th3;
 
     que = newQueue();
-
 
     pthread_create(&th1, NULL, thread_push, NULL);
     pthread_create(&th2, NULL, thread_pop, NULL);

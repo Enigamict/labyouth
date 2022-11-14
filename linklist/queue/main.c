@@ -9,10 +9,6 @@ int main() {
     q = newQueue();
 
     push(q, 1);
-    push(q, 2);
-    push(q, 3);
-    push(q, 4);
-    push(q, 5);
 
     print_node(q->head);
     pop(q);
