@@ -12,7 +12,7 @@ pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 
 queue *que;
 
-void *thread_push() {
+void *thread_push() { //producer
 
     pthread_mutex_lock(&mut);
 
@@ -24,12 +24,11 @@ void *thread_push() {
     return NULL;
 }
 
-void *thread_pop() { 
+void *thread_pop() { //consumer 
     pthread_mutex_lock(&mut);
 
     printf("que pop = %p\n", que);
     if (isEmpty(que)) {
-        //pthread_mutex_unlock(&mut); // lockをかける理由としてifまでの間にメソッドが入らないようにするため
         printf("wait\n");
         pthread_cond_wait(&cond, &mut); // 解放した後はまたロック
         printf("wait end\n");
@@ -45,22 +44,40 @@ int main1() {
     que = newQueue();
     push(que, 1);
     pop(que);
-    pop(que);
 
+    printf("%d", (isEmpty(que)));
+
+    if (isEmpty(que))
+    {
+        push(que, 2);
+    }
+
+    print_node(que->head);
+
+    return 1;
 }
-int main() {
 
-    pthread_t th1, th2, th3;
+int main() {
+    pthread_t th[256];
 
     que = newQueue();
 
-    pthread_create(&th1, NULL, thread_push, NULL);
-    pthread_create(&th2, NULL, thread_pop, NULL);
-    pthread_create(&th3, NULL, thread_pop, NULL);
+    pthread_create(&th[0], NULL, thread_push, NULL);
+    pthread_create(&th[1], NULL, thread_push, NULL);
+    pthread_create(&th[2], NULL, thread_pop, NULL);
+    pthread_create(&th[3], NULL, thread_pop, NULL);
+//    for (int i = 0; i < 5; i++) {
+//        pthread_create(&th[i], NULL, thread_push, NULL);
+//    }
+//
+//    for (int i = 0; i < 5; i++) {
+//        pthread_create(&th[i], NULL, thread_pop, NULL);
+//    }
 
-    pthread_join(th1, NULL); 
-    pthread_join(th2, NULL);
-    pthread_join(th3, NULL);
+    pthread_join(th[0], NULL);
+    pthread_join(th[1], NULL);
+    pthread_join(th[2], NULL);
+    pthread_join(th[3], NULL);
 
     pthread_mutex_destroy(&mut);
 

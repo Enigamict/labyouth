@@ -56,7 +56,7 @@ queue *push(queue *queue, int data) {
 void pop(queue *queue) {
 
     if (queue->head == NULL) {
-        printf("queue error\n");
+        printf("pop error\n");
         return;
     }
 
@@ -72,7 +72,7 @@ int top(queue *queue) {
 
 bool isEmpty(queue *queue) {
 
-    if (!queue->head && !queue->tail) return true;
+    if (!queue->head || !queue->tail) return true;
 
     return false;
 }
