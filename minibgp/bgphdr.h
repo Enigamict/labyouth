@@ -22,7 +22,13 @@
 
 struct config {
     uint16_t as_number;
+    struct in_addr peer_address;
     struct in_addr bgp_identifier;
+};
+
+struct stream {
+    unsigned char buf[4096];
+    size_t size;
 };
 
 typedef struct bgp_hdr_t {
