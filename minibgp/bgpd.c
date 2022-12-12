@@ -13,17 +13,9 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-#include "bgphdr.h"
+#include "bgpd.h"
+#include "libbuf.h"
 
-#define BGP_HDR_LEN 19
-#define BGP_HDR_MAX_LEN 4096
-#define BGP_OPEN_HDR_LEN 10
-#define BGP_KEEPALIVE_LEN 19
-
-#define BGP_VERSION 0x04
-#define BGP_HOLDTIME 0x00B4
-
-static const int versionOffset = 19;
 
 uint16_t convert_hex(int data) {
   char s[16];
@@ -54,65 +46,13 @@ static void hexdump1(FILE* fp, const void *buffer, size_t bufferlen)
   }
 }
 
-bgp_hdr bgp_hdr_init()
+struct stream bgp_stream_init()
 {
 
-  bgp_hdr hdr;
+  struct stream s;
 
-  hdr = (bgp_hdr){0};
-  return hdr;
-}
-
-bgp_hdr bgp_hdr_create(int type, int hdrlen) {
-
-  bgp_hdr bgp;
-  bgp = bgp_hdr_init();
-  uint8_t marker[BGP_MARKER] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
-                                0xFF, 0xFF, 0xFF, 0xFF};
-
-  memcpy(bgp.marker, marker, BGP_MARKER);
-  bgp.len = convert_hex(hdrlen); 
-  bgp.type = type;
-  return bgp;
-}
-
- bgp_open bgp_openhdr_init() 
- {
-
-  bgp_open open;
-
-  open = (bgp_open){ 0 };
-  return open;
-}
-
-
-bgp_open bgp_openhdr_create(struct config conf) {
-
-  bgp_open open;
-  open = bgp_openhdr_init();
-
-  open.bgphdr = bgp_hdr_create(BGP_MSG_TYPE_OPEN, 29); // bgplen 19 + bgpopen_hdr_len 10
-  open.version = 0x04;
-  open.my_autonomous_system = convert_hex(conf.as_number);
-  open.hold_time = htons(BGP_HOLDTIME);
-  open.bgp_identifier = conf.bgp_identifier;
-  open.opt_parm_length = 0;
-  return open;
-}
-
-
-uint8_t get1byte(const uint8_t *buf)
-{
-  return buf[0];
-}
-uint16_t get2byteBE(const uint8_t *buf)
-{
-  return (uint16_t)(buf[0] << 8) | buf[1];
-}
-
-uint32_t get4byteBE(const uint8_t *buf)
-{
-  return (uint32_t)(get2byteBE(buf) << 16) + get2byteBE(buf + 2);
+  s = (struct stream){0};
+  return s;
 }
 
 bgp_hdr parseBgpHdr(const uint8_t *buf)
@@ -130,16 +70,23 @@ bgp_hdr parseBgpHdr(const uint8_t *buf)
   return ret;
 }
 
+
 int parseBgpOpenHdr(const uint8_t *buf)
 {
   bgp_open ret;
   uint32_t iden;
 
+  static const int versionOffset = 19;
+  static const int myasOffset = 20;
+  static const int holdtimeOffset = 22;
+  static const int idenOffset = 24;
+  static const int optOffset = 28;
+
   ret.version = get1byte(buf + versionOffset);
-  ret.my_autonomous_system = get2byteBE(buf + 20);
-  ret.hold_time = get2byteBE(buf + 22);
-  iden = get4byteBE(buf + 24); // idenは取れるけどどうIPにパースするかを考える FRRとかは専用のIPを取得するやつを作っている
-  ret.opt_parm_length = get1byte(buf + 28);
+  ret.my_autonomous_system = get2byteBE(buf + myasOffset);
+  ret.hold_time = get2byteBE(buf + holdtimeOffset);
+  iden = get4byteBE(buf + idenOffset); // idenは取れるけどどうIPにパースするかを考える FRRとかは専用のIPを取得するやつを作っている
+  ret.opt_parm_length = get1byte(buf + optOffset);
 
   printf("version:%x\n", ret.version);
   printf("MY AS:%d\n", ret.my_autonomous_system);
@@ -154,32 +101,16 @@ int parseBgpOpenHdr(const uint8_t *buf)
   return 0;
 }
 
-
-int set1byte(struct stream *s, uint8_t data) {
-  
-  s->buf[s->size++] = data;
-  return 1;
-}
-
-int set2byteBE(struct stream *s, uint16_t data) {
-  
-
-  s->buf[s->size++] = (uint8_t)data;
-  s->buf[s->size++] = (uint8_t)(data >> 8);
-
-  return 1;
-}
-
 int bgp_hdr_create_buf(struct stream *s, int hdrlen) {
 
   for (size_t i = 0; i < BGP_MARKER; i++) {
-    set1byte(s, (uint8_t)0xff);
+    streamSet1byte(s, (uint8_t)0xff);
   }
 
   uint16_t bgp_hdr_len = convert_hex(hdrlen);
 
-  set2byteBE(s, bgp_hdr_len); 
-  set1byte(s, BGP_MSG_TYPE_OPEN);
+  streamSet2byteBE(s, bgp_hdr_len); 
+  streamSet1byte(s, BGP_MSG_TYPE_OPEN);
   return 1;
 
 }
@@ -188,13 +119,13 @@ int bgp_hdr_create_buf(struct stream *s, int hdrlen) {
 int bgp_keepalive_hdr_create_buf(struct stream *s) {
 
   for (size_t i = 0; i < BGP_MARKER; i++) {
-    set1byte(s, (uint8_t)0xff);
+    streamSet1byte(s, (uint8_t)0xff);
   }
 
   uint16_t bgp_hdr_len = convert_hex(19);
 
-  set2byteBE(s, bgp_hdr_len); 
-  set1byte(s, BGP_MSG_TYPE_KEEPALIVE);
+  streamSet2byteBE(s, bgp_hdr_len); 
+  streamSet1byte(s, BGP_MSG_TYPE_KEEPALIVE);
 
   return 1; 
 }
@@ -203,33 +134,22 @@ int bgp_openhdr_create_buf(struct stream *s, struct config *conf) {
 
   bgp_hdr_create_buf(s, 29);
 
-  set1byte(s, 0x04); // version
+  streamSet1byte(s, 0x04); // version
 
   uint16_t my_as = convert_hex(conf->as_number);
 
-  set2byteBE(s, my_as); // as
-  set2byteBE(s, htons(BGP_HOLDTIME)); // hold_time
-  memcpy(s->buf + s->size, &conf->bgp_identifier, sizeof(uint32_t)); // iden
-	s->size += sizeof(uint32_t);
-
-  set1byte(s, 0x00); // version
+  streamSet2byteBE(s, my_as); // as
+  streamSet2byteBE(s, htons(BGP_HOLDTIME)); // hold_time
+  streamSetipv4AddrBE(s, conf->bgp_identifier);
+  streamSet1byte(s, 0x00); // version
 
   return 1; 
 }
 
-struct stream bgp_stream_init()
-{
-
-  struct stream s;
-
-  s = (struct stream){0};
-  return s;
-}
 
 int main(int argc, char** argv)
 {
     struct sockaddr_in server;
-    //bgp_open open;
     struct stream s;
     struct config config;
     int sock;
@@ -253,9 +173,13 @@ int main(int argc, char** argv)
     bind(sock, (struct sockaddr *)&server, sizeof(server));
     connect(sock, (struct sockaddr *)&server, sizeof(server));
 
-    //open = bgp_openhdr_create(config);
-
     size_t size = send(sock, &s.buf, s.size, 0);
+
+    if (size < 1) {
+      printf("send error! \n");
+      return 1;
+    }
+
     printf("open send to... \n");
     printf("%ld", size);
 
