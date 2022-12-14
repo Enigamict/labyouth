@@ -71,6 +71,35 @@ bgp_hdr parseBgpHdr(const uint8_t *buf)
 }
 
 
+int parseBgpUpdateHdr(const uint8_t *buf)
+{
+
+  uint8_t ipv4_update_prefix_len;
+  //hexdump1(stdout, &buf, 100);
+
+  ipv4_update_prefix_len = get1byte(buf + 41);
+  printf("prefix len:%x\n", ipv4_update_prefix_len);
+
+  if (ipv4_update_prefix_len > 24) {
+    uint32_t ipv4_upd_prefix = get4byteBE(buf + 42);
+    printf("prefix:%x\n", ipv4_upd_prefix);
+    return 1;
+  }
+
+  uint8_t ipv4_upd_prefix_list[3];
+
+  ipv4_upd_prefix_list[0] = get1byte(buf + 42); // dounikasuru
+  ipv4_upd_prefix_list[1] = get1byte(buf + 43); // dounikasuru
+  ipv4_upd_prefix_list[2] = get1byte(buf + 44); // dounikasuru
+  ipv4_upd_prefix_list[3] = 0; // dounikasuru
+
+  printf("prefix:%x\n", ipv4_upd_prefix_list[0]);
+  printf("prefix:%x\n", ipv4_upd_prefix_list[1]);
+  printf("prefix:%x\n", ipv4_upd_prefix_list[2]);
+  printf("prefix:%x\n", ipv4_upd_prefix_list[3]);
+  return 0;
+}
+
 int parseBgpOpenHdr(const uint8_t *buf)
 {
   bgp_open ret;
@@ -111,7 +140,7 @@ int bgp_hdr_create_buf(struct stream *s, int hdrlen) {
 
   streamSet2byteBE(s, bgp_hdr_len); 
   streamSet1byte(s, BGP_MSG_TYPE_OPEN);
-  return 1;
+  return 0;
 
 }
 
@@ -127,7 +156,7 @@ int bgp_keepalive_hdr_create_buf(struct stream *s) {
   streamSet2byteBE(s, bgp_hdr_len); 
   streamSet1byte(s, BGP_MSG_TYPE_KEEPALIVE);
 
-  return 1; 
+  return 0; 
 }
 
 int bgp_openhdr_create_buf(struct stream *s, struct config *conf) {
@@ -143,7 +172,7 @@ int bgp_openhdr_create_buf(struct stream *s, struct config *conf) {
   streamSetipv4AddrBE(s, conf->bgp_identifier);
   streamSet1byte(s, 0x00); // version
 
-  return 1; 
+  return 0; 
 }
 
 
@@ -181,7 +210,7 @@ int main(int argc, char** argv)
     }
 
     printf("open send to... \n");
-    printf("%ld", size);
+    printf("send size:%ld\n", size);
 
     bgp_hdr recv_bgp;
 
@@ -202,6 +231,9 @@ int main(int argc, char** argv)
       {
       case BGP_MSG_TYPE_OPEN:
         parseBgpOpenHdr((uint8_t *)buf);
+        break;
+      case BGP_MSG_TYPE_UPDATE:
+        parseBgpUpdateHdr((uint8_t *)buf);
         break;
       case BGP_MSG_TYPE_KEEPALIVE:
         struct stream kepps;
