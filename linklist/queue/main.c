@@ -9,6 +9,9 @@ int main() {
     q = newQueue();
 
     push(q, 1);
+    printf("adress :%x", q);
+    push(q, 2);
+    printf("adress :%x", q);
 
     print_node(q->head);
     pop(q);

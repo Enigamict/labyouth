@@ -14,16 +14,15 @@
 #include <stdlib.h>
 
 #include "bgpd.h"
+#include "rib.h"
 #include "libbuf.h"
 
+uint32_t ip_prefix_list[254]; // いずれ消す
+int rib_count;
 
 uint16_t convert_hex(int data) {
-  char s[16];
-  snprintf(s, 16, "%x", data); // 19
-  long v = strtol(s, NULL, 16);
-  return htons(v);
+  return htons(data);
 }
-
 
 static void hexdump1(FILE* fp, const void *buffer, size_t bufferlen)
 {
@@ -71,33 +70,36 @@ bgp_hdr parseBgpHdr(const uint8_t *buf)
 }
 
 
-int parseBgpUpdateHdr(const uint8_t *buf)
+struct bgp_rib *parseBgpUpdateHdr(struct bgp_rib *r, const uint8_t *buf)
 {
 
   uint8_t ipv4_update_prefix_len;
-  //hexdump1(stdout, &buf, 100);
-
+  uint32_t ipv4_upd_prefix;
   ipv4_update_prefix_len = get1byte(buf + 41);
-  printf("prefix len:%x\n", ipv4_update_prefix_len);
+  printf("prefix len:%d\n", ipv4_update_prefix_len);
 
   if (ipv4_update_prefix_len > 24) {
-    uint32_t ipv4_upd_prefix = get4byteBE(buf + 42);
+    ipv4_upd_prefix = get4byteBE(buf + 42);
     printf("prefix:%x\n", ipv4_upd_prefix);
-    return 1;
+    return NULL;
   }
 
-  uint8_t ipv4_upd_prefix_list[3];
+  uint8_t buf4[4] = {0};
+  memcpy(buf4, buf + 42, 3);
+  ipv4_upd_prefix = get4byteBE(buf4);
 
-  ipv4_upd_prefix_list[0] = get1byte(buf + 42); // dounikasuru
-  ipv4_upd_prefix_list[1] = get1byte(buf + 43); // dounikasuru
-  ipv4_upd_prefix_list[2] = get1byte(buf + 44); // dounikasuru
-  ipv4_upd_prefix_list[3] = 0; // dounikasuru
+  printf("ip prefix:%x\n", ipv4_upd_prefix);
+  struct in_addr inaddr = { htonl(ipv4_upd_prefix) };
+	char *addrstr = inet_ntoa(inaddr);
 
-  printf("prefix:%x\n", ipv4_upd_prefix_list[0]);
-  printf("prefix:%x\n", ipv4_upd_prefix_list[1]);
-  printf("prefix:%x\n", ipv4_upd_prefix_list[2]);
-  printf("prefix:%x\n", ipv4_upd_prefix_list[3]);
-  return 0;
+  printf("%s\n", addrstr);
+  printf("rib_address:%x\n", r);
+
+  ribPush(r ,ipv4_upd_prefix);
+
+  print_node(r->head);
+
+  return r;
 }
 
 int parseBgpOpenHdr(const uint8_t *buf)
@@ -182,7 +184,7 @@ int main(int argc, char** argv)
     struct stream s;
     struct config config;
     int sock;
-    char buf[4096];
+    uint8_t buf[4096];
 
     config.as_number = 65001;
     inet_pton(AF_INET, "10.255.3.1", &config.bgp_identifier);
@@ -214,6 +216,9 @@ int main(int argc, char** argv)
 
     bgp_hdr recv_bgp;
 
+    struct bgp_rib *test;
+    test = bgpInitRib();
+
     while (1)
     {
       ssize_t bgp_pkt_size = recv(sock, buf, sizeof(buf), 0);
@@ -225,15 +230,15 @@ int main(int argc, char** argv)
         break;
       }
 
-      recv_bgp = parseBgpHdr((uint8_t *)buf);
+      recv_bgp = parseBgpHdr(buf);
 
       switch (recv_bgp.type)
       {
       case BGP_MSG_TYPE_OPEN:
-        parseBgpOpenHdr((uint8_t *)buf);
+        parseBgpOpenHdr(buf);
         break;
       case BGP_MSG_TYPE_UPDATE:
-        parseBgpUpdateHdr((uint8_t *)buf);
+        parseBgpUpdateHdr(test, buf);
         break;
       case BGP_MSG_TYPE_KEEPALIVE:
         struct stream kepps;

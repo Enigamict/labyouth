@@ -37,6 +37,7 @@ struct config {
     struct in_addr bgp_identifier;
 };
 
+
 typedef struct bgp_hdr_t {
  uint8_t marker[BGP_MARKER];
  uint16_t len;
@@ -69,9 +70,9 @@ struct bgp_update {
 
 bgp_hdr parseBgpHdr(const uint8_t *buf);
 struct stream bgp_stream_init();
-int parseBgpOpenHdr(const uint8_t *buf);
 
 
+struct bgp_rib *parseBgpUpdateHdr(struct bgp_rib *r, const uint8_t *buf);
 int bgp_hdr_create_buf(struct stream *s, int hdrlen);
 int bgp_keepalive_hdr_create_buf(struct stream *s);
 int bgp_openhdr_create_buf(struct stream *s, struct config *conf);
