@@ -46,15 +46,14 @@ struct bgprib_link_node *add_next_node(struct bgprib_link_node *node, uint32_t d
     }
 
     struct bgprib_link_node  *next = node->next;
-//
     node->next = addNode;
     addNode->next = next;
     addNode->prev = node;
-//
+
     if (next) {
         next->prev = addNode;
     }
-//
+
     return addNode;
 }
 
@@ -121,6 +120,7 @@ struct bgprib_link_node *pop_node(struct bgprib_link_node *node) {
     return prev;
 
 }
+
 void print_node(struct bgprib_link_node *n) {
 
     printf("list [");

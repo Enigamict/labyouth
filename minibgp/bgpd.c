@@ -24,7 +24,7 @@ uint16_t convert_hex(int data) {
   return htons(data);
 }
 
-static void hexdump1(FILE* fp, const void *buffer, size_t bufferlen)
+void hexdump1(FILE* fp, const void *buffer, size_t bufferlen)
 {
   const uint8_t *data = (const uint8_t*)(buffer); size_t row = 0;
   while (bufferlen > 0) {
@@ -250,7 +250,7 @@ int main(int argc, char** argv)
         continue;
       }
     }
-    
+    //
     close(sock);
     return 0;
 }

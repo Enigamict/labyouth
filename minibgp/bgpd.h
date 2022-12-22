@@ -72,6 +72,7 @@ bgp_hdr parseBgpHdr(const uint8_t *buf);
 struct stream bgp_stream_init();
 
 
+void hexdump1(FILE* fp, const void *buffer, size_t bufferlen);
 struct bgp_rib *parseBgpUpdateHdr(struct bgp_rib *r, const uint8_t *buf);
 int bgp_hdr_create_buf(struct stream *s, int hdrlen);
 int bgp_keepalive_hdr_create_buf(struct stream *s);

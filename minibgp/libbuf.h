@@ -22,3 +22,6 @@ uint32_t get4byteBE(const uint8_t *buf);
 int streamSet1byte(struct stream *s, uint8_t data);
 int streamSet2byteBE(struct stream *s, uint16_t data);
 int streamSetipv4AddrBE(struct stream *s, struct in_addr addr);
+
+int streamSet(struct stream *s, const uint8_t *buf, size_t bufSize);
+int set2byteBE(uint8_t *buf, uint16_t data);
